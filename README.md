@@ -10,7 +10,7 @@
 * i18next
 * Formik
 * Axios
-## [Check Example Here](https://shielded-spire-13127.herokuapp.com/)
+## [Link to the chat page](https://shielded-spire-13127.herokuapp.com/)
 
 ## Install
 
