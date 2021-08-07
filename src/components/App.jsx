@@ -78,6 +78,7 @@ const SignUpButton = () => {
 
 const App = ({ socket }) => (
   <AuthProvider>
+    <div className="d-flex flex-column h-100">
     <Router>
       <Navbar bg="light" variant="light" expand="lg">
         <Container>
@@ -102,6 +103,7 @@ const App = ({ socket }) => (
         </Route>
       </Switch>
     </Router>
+    </div>
   </AuthProvider>
 );
 export default App;
