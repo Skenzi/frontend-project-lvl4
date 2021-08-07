@@ -2,14 +2,6 @@
 
 # Slack Chat App
 
-* ### React and Redux Toolkit 
-* React-router-dom
-* React-bootstrap
-* Yup
-* Socket.io
-* i18next
-* Formik
-* Axios
 ## [Link to the chat page](https://shielded-spire-13127.herokuapp.com/)
 
 ## Install
