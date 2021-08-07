@@ -10,7 +10,7 @@
 * i18next
 * Formik
 * Axios
-## [Check Example Here](https://slack-chat-hexlet.herokuapp.com/)
+## [Check Example Here](https://shielded-spire-13127.herokuapp.com/)
 
 ## Install
 
