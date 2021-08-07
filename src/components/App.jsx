@@ -87,22 +87,20 @@ const App = ({ socket }) => (
         </Container>
       </Navbar>
 
-      <div className="container p-3">
-        <Switch>
-          <Route path="/login">
-            <LoginPage />
-          </Route>
-          <Route path="/signup">
-            <SignUpPage />
-          </Route>
-          <ChatRoute path="/">
-            <ChatPage socket={socket} />
-          </ChatRoute>
-          <Route path="*">
-            <NotFoundPage />
-          </Route>
-        </Switch>
-      </div>
+      <Switch>
+        <Route path="/login">
+          <LoginPage />
+        </Route>
+        <Route path="/signup">
+          <SignUpPage />
+        </Route>
+        <ChatRoute path="/">
+          <ChatPage socket={socket} />
+        </ChatRoute>
+        <Route path="*">
+          <NotFoundPage />
+        </Route>
+      </Switch>
     </Router>
   </AuthProvider>
 );

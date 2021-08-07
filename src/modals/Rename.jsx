@@ -12,7 +12,7 @@ const RenameModal = ({ onHide, modalInfo, socket }) => {
     inputRef.current.select();
     socketRef.current.on('renameChannel', (renamingChannel) => {
       dispatch(renameChannel(renamingChannel));
-    })
+    });
   }, [socketRef]);
   const f = useFormik({
     initialValues: {

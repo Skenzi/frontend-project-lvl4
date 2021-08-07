@@ -25,7 +25,7 @@ const init = () => {
     document.querySelector('#chat'),
   );
   console.log('it works!');
-}
+};
 
 init();
 

@@ -6,13 +6,13 @@ const AddModal = ({ onHide, socket, modalInfo }) => {
   const inputRef = useRef();
   useEffect(() => {
     inputRef.current.focus();
-  })
+  });
   const f = useFormik({
     initialValues: {
       body: '',
     },
     onSubmit: (values) => {
-      socket.emit('newChannel', { name: values.body })
+      socket.emit('newChannel', { name: values.body });
       onHide();
     },
   });

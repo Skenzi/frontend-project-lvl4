@@ -11,7 +11,7 @@ const modals = {
   renaming: RenameModal,
 };
 
-const renderModal = ({socket, onHide, modalInfo}) => {
+const renderModal = ({ socket, onHide, modalInfo }) => {
   const dispatch = useDispatch();
   const socketRef = useRef(socket);
   useEffect(() => {
@@ -30,6 +30,6 @@ const renderModal = ({socket, onHide, modalInfo}) => {
   }
   const Component = modals[modalInfo.type];
   return <Component modalInfo={modalInfo} onHide={onHide} socket={socket} />;
-}
+};
 
 export default renderModal;

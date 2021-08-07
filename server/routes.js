@@ -127,7 +127,7 @@ export default (app, defaultState = {}) => {
 
   app.get('/api/v1/data', { preValidation: [app.authenticate] }, (req, reply) => {
     const user = state.users.find(({ id }) => id === req.user.userId);
-    console.log(user)
+    console.log(user);
 
     if (!user) {
       reply.send(new Unauthorized());

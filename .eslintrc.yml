@@ -26,6 +26,8 @@ rules:
   import/extensions: 0
   react/prop-types: 0
   no-console: 0
+  no-param-reassign: 0
+  no-use-before-define: 0
   functional/no-conditional-statement: 0
   functional/no-expression-statement: 0
   functional/immutable-data: 0

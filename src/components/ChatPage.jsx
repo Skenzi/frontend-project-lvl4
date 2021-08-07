@@ -8,36 +8,41 @@ import MyModal from '../modals/index.jsx';
 
 const ChannelsList = ({ showModal }) => {
   const dispatch = useDispatch();
-  const { channels } = useSelector((state) => state.channelsData);
+  const { channels, currentChannelId } = useSelector((state) => state.channelsData);
   const handleClickMenu = (type, channel) => () => {
     showModal(type, channel);
   };
   return (
     <ul id="channelsList" className="nav flex-column nav-pills nav-fill px-2">
-      {channels.map((channel) => (
-        <li key={channel.id} className="nav-item w-100">
-          <div className="d-flex dropdown btn-group">
-            <button
-              type="button"
-              className="w-100 rounded-0 text-start text-truncate btn"
-              onClick={() => {
-                dispatch(swapCurrentChannelId(channel.id));
-              }}
-            >
-              {channel.name}
-            </button>
-            {channel.removable ? (
-              <>
-                <button type="button" id="dLabel" className="btn dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><span className="sr-only">Toggle Dropdown</span></button>
-                <div className="dropdown-menu" aria-labelledby="dLabel">
-                  <button type="button" className="dropdown-item" onClick={handleClickMenu('removing', channel)}>Remove</button>
-                  <button type="button" className="dropdown-item" onClick={handleClickMenu('renaming', channel)}>Rename</button>
-                </div>
-              </>
-            ) : null}
-          </div>
-        </li>
-      ))}
+      {channels.map((channel) => {
+        const classChannelActive = channel.id === currentChannelId ? 'btn btn-secondary' : 'btn';
+        return (
+          <li key={channel.id} className="nav-item w-100">
+            <div className="d-flex dropdown btn-group">
+              <button
+                type="button"
+                className={`${classChannelActive} w-100 rounded-0 text-left text-truncate`}
+                onClick={() => {
+                  dispatch(swapCurrentChannelId(channel.id));
+                }}
+              >
+                #
+                {' '}
+                {channel.name}
+              </button>
+              {channel.removable ? (
+                <>
+                  <button type="button" id="dLabel" className={`${classChannelActive} dropdown-toggle dropdown-toggle-split`} data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><span className="sr-only">Toggle Dropdown</span></button>
+                  <div className="dropdown-menu" aria-labelledby="dLabel">
+                    <button type="button" className="dropdown-item" onClick={handleClickMenu('removing', channel)}>Remove</button>
+                    <button type="button" className="dropdown-item" onClick={handleClickMenu('renaming', channel)}>Rename</button>
+                  </div>
+                </>
+              ) : null}
+            </div>
+          </li>
+        );
+      })}
     </ul>
   );
 };
@@ -77,13 +82,13 @@ const MessagesBox = () => {
   const currentMessages = messages.filter((message) => message.channelId === currentChannelId);
   return (
     <div className="chat-messages overflow-auto px-5 " id="messages-box">
-      <ul>
-        {currentMessages.map(({ text, username, id }) => (
-          <li key={id}>
-            {`${username}: ${text}`}
-          </li>
-        ))}
-      </ul>
+      {currentMessages.map(({ text, username, id }) => (
+        <div className="text-break mb-2" key={id}>
+          <b>{username}</b>
+          :
+          {text}
+        </div>
+      ))}
     </div>
   );
 };
@@ -102,7 +107,8 @@ const MessagesForm = ({ socket }) => {
     <div className="mt-auto px-5 py-3">
       <Formik
         initialValues={{ message: '' }}
-        onSubmit={({ message }) => {
+        onSubmit={({ message }, actions) => {
+          actions.resetForm();
           const currentMessage = { username, text: message, channelId: currentChannelId };
           socket.emit('newMessage', currentMessage, (responce) => {
             console.log(responce, 'responce');
@@ -113,13 +119,13 @@ const MessagesForm = ({ socket }) => {
           values,
           handleChange,
           handleSubmit,
-          isSubmitting,
         }) => (
           <Form onSubmit={handleSubmit} className="py-1 border rounded-2">
-            <Form.Group className="mb-3">
+            <div className="input-group has-validation">
               <Form.Control
                 type="text"
                 name="message"
+                data-testid="new-message"
                 id="message"
                 placeholder="Enter your message"
                 className="border-0 p-0 pl-2 form-control"
@@ -127,10 +133,12 @@ const MessagesForm = ({ socket }) => {
                 required
                 value={values.message}
               />
-            </Form.Group>
-            <Button variant="primary" type="submit" className="btn btn-group-vertical">
-              Send
-            </Button>
+              <div className="input-group-append">
+                <Button variant="primary" type="submit" className="btn btn-group-vertical">
+                  Send
+                </Button>
+              </div>
+            </div>
           </Form>
         )}
       </Formik>

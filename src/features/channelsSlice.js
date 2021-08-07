@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 import routes from '../routes.js';
 
@@ -27,7 +27,7 @@ export const channelsSlice = createSlice({
   },
   reducers: {
     setInitialState: (state, { payload }) => {
-      console.log(payload, 'payload fetch')
+      console.log(payload, 'payload fetch');
       state.channels = payload.channels;
       state.currentChannelId = payload.currentChannelId;
     },
@@ -45,7 +45,7 @@ export const channelsSlice = createSlice({
       const indRenamingChannel = state.channels.indexOf(prevRenamingChannel);
       state.channels[indRenamingChannel] = payload;
     },
-    swapCurrentChannelId: (state, {payload}) => {
+    swapCurrentChannelId: (state, { payload }) => {
       state.currentChannelId = payload;
     },
   },
