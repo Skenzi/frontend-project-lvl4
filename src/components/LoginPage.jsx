@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Formik } from 'formik';
 import { Button, Form } from 'react-bootstrap';
 import { useLocation, useHistory } from 'react-router-dom';
@@ -11,6 +12,7 @@ import { setUsername } from '../features/userSlice.js';
 
 const LoginPage = () => {
   const auth = useAuth();
+  const i18n = useTranslation();
   const location = useLocation();
   const history = useHistory();
   const dispatch = useDispatch();
@@ -56,7 +58,7 @@ const LoginPage = () => {
             <div className="col-sm-4">
               <Form onSubmit={handleSubmit}>
                 <Form.Group className="mb-3">
-                  <Form.Label htmlFor="username">Username</Form.Label>
+                  <Form.Label htmlFor="username">{i18n.t('login.username')}</Form.Label>
                   <Form.Control
                     type="text"
                     name="username"
@@ -70,7 +72,7 @@ const LoginPage = () => {
                   {errors.username && touched.username ? (<p className="text-danger">{errors.username}</p>) : null}
                 </Form.Group>
                 <Form.Group className="mb-3">
-                  <Form.Label htmlFor="password">Password</Form.Label>
+                  <Form.Label htmlFor="password">{i18n.t('login.password')}</Form.Label>
                   <Form.Control
                     type="password"
                     name="password"
@@ -83,9 +85,9 @@ const LoginPage = () => {
                   />
                   {errors.password && touched.password ? (<p className="text-danger">{errors.password}</p>) : null}
                 </Form.Group>
-                <Form.Control.Feedback type="invalid">the username or password is incorrect</Form.Control.Feedback>
+                <Form.Control.Feedback type="invalid">{i18n.t('login.fillError')}</Form.Control.Feedback>
                 <Button variant="primary" type="submit" disabled={isSubmitting}>
-                  Log in
+                  {i18n.t('login.logIn')}
                 </Button>
               </Form>
             </div>

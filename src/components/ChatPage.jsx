@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useSelector, useDispatch } from 'react-redux';
 import { Formik } from 'formik';
 import { Button, Form } from 'react-bootstrap';
@@ -47,17 +48,19 @@ const ChannelsList = ({ showModal }) => {
   );
 };
 
-const ChannelsContainer = ({ showModal }) => (
-  <>
+const ChannelsContainer = ({ showModal }) => {
+  const i18n = useTranslation();
+  return <>
     <div className="d-flex justify-content-between mb-2 pl-4 pr-2">
-      <span>Channels</span>
+      <span>{i18n.t('channels')}</span>
       <button type="button" className="p-0 text-primary btn btn-group-vertical" onClick={() => showModal('adding')}>+</button>
     </div>
     <ChannelsList showModal={showModal} />
   </>
-);
+};
 
 const MessagesHeader = () => {
+  const i18n = useTranslation();
   const { currentChannelId, channels } = useSelector((state) => state.channelsData);
   const { messages } = useSelector((state) => state.messagesData);
   const currentMessages = messages.filter((message) => message.channelId === currentChannelId);
@@ -67,11 +70,11 @@ const MessagesHeader = () => {
     <div className="bg-light mb-4 p-3 shadow-sm small">
       <p className="m-0">
         <b>
-          #
+          # 
           {currentChannel && currentChannel.name}
         </b>
       </p>
-      <p className="text-muted">{`${messagesCount} messages`}</p>
+      <p className="text-muted">{`${messagesCount} ${i18n.t('messages')}`}</p>
     </div>
   );
 };
@@ -95,6 +98,7 @@ const MessagesBox = () => {
 
 const MessagesForm = ({ socket }) => {
   const { currentChannelId } = useSelector((state) => state.channelsData);
+  const i18n = useTranslation();
   const username = localStorage.getItem('username');
   const socketRef = useRef(socket);
   const dispatch = useDispatch();
@@ -135,7 +139,7 @@ const MessagesForm = ({ socket }) => {
               />
               <div className="input-group-append">
                 <Button variant="primary" type="submit" className="btn btn-group-vertical">
-                  Send
+                  {i18n.t('send')}
                 </Button>
               </div>
             </div>

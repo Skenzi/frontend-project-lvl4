@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   BrowserRouter as Router,
   Switch,
@@ -56,22 +57,24 @@ const AuthProvider = ({ children }) => {
 
 const AuthButton = () => {
   const auth = useAuth();
+  const i18n = useTranslation();
   return auth.loggedIn ? (
     <Button onClick={() => {
       auth.logOut();
       auth.signUpOpen();
     }}
     >
-      Log out
+      {i18n.t('login.logOut')}
     </Button>
   ) : null;
 };
 
 const SignUpButton = () => {
   const auth = useAuth();
+  const i18n = useTranslation();
   return auth.signUp && !auth.loggedIn ? (
     <Button as={Link} to="/signup">
-      Sign Up
+      {i18n.t('signUp')}
     </Button>
   ) : null;
 };
