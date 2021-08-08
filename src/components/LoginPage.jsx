@@ -21,6 +21,7 @@ const LoginPage = () => {
     username: yup.string().required('Обязательно заполнить!'),
     password: yup.string().required('Обязательно заполнить!'),
   });
+  console.log(loginFailed)
   return (
     <Formik
       initialValues={{ username: '', password: '' }}
@@ -30,7 +31,6 @@ const LoginPage = () => {
         try {
           const response = await axios.post(routes.loginPath(), values);
           const token = response.data;
-          console.log(token, 'login');
           localStorage.setItem('userId', JSON.stringify(token));
           localStorage.setItem('username', values.username);
           auth.logIn();
@@ -56,6 +56,8 @@ const LoginPage = () => {
         <div className="container-fluid">
           <div className="row justify-content-center pt-5">
             <div className="col-sm-4">
+              <div className="card shadow-sm">
+              <div className="card-body">
               <Form onSubmit={handleSubmit}>
                 <Form.Group className="mb-3">
                   <Form.Label htmlFor="username">{i18n.t('login.username')}</Form.Label>
@@ -84,12 +86,15 @@ const LoginPage = () => {
                     value={values.password}
                   />
                   {errors.password && touched.password ? (<p className="text-danger">{errors.password}</p>) : null}
+                  <Form.Control.Feedback type="invalid">{i18n.t('login.fillError')}</Form.Control.Feedback>
                 </Form.Group>
-                <Form.Control.Feedback type="invalid">{i18n.t('login.fillError')}</Form.Control.Feedback>
+                
                 <Button variant="primary" type="submit" disabled={isSubmitting}>
                   {i18n.t('login.logIn')}
                 </Button>
               </Form>
+              </div>
+              </div>
             </div>
           </div>
         </div>

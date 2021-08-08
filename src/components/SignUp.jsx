@@ -15,8 +15,8 @@ const SignUpPage = () => {
   const location = useLocation();
   const history = useHistory();
   const signUpSchema = yup.object().shape({
-    username: yup.string().required(),
-    password: yup.string().required(),
+    username: yup.string().min(3).max(30).required(),
+    password: yup.string().min(6).max(40).required(),
     repeatPassword: yup.string().oneOf([yup.ref('password'), null], 'Passwords must match'),
   });
   return (
@@ -56,7 +56,9 @@ const SignUpPage = () => {
         <div className="container-fluid">
           <div className="row justify-content-center pt-5">
             <div className="col-sm-4">
-              <Form onSubmit={handleSubmit}>
+            <div className="card shadow-sm">
+              <div className="card-body">
+               <Form onSubmit={handleSubmit}>
                 <Form.Group className="mb-3">
                   <Form.Label htmlFor="username">Username</Form.Label>
                   <Form.Control
@@ -104,6 +106,8 @@ const SignUpPage = () => {
                   Sign Up
                 </Button>
               </Form>
+              </div>
+              </div>
             </div>
           </div>
         </div>
