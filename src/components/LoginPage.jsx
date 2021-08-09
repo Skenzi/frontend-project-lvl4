@@ -5,17 +5,14 @@ import { Button, Form } from 'react-bootstrap';
 import { useLocation, useHistory } from 'react-router-dom';
 import * as yup from 'yup';
 import axios from 'axios';
-import { useDispatch } from 'react-redux';
 import useAuth from '../hooks/index.jsx';
 import routes from '../routes.js';
-import { setUsername } from '../features/userSlice.js';
 
 const LoginPage = () => {
   const auth = useAuth();
   const i18n = useTranslation();
   const location = useLocation();
   const history = useHistory();
-  const dispatch = useDispatch();
   const [loginFailed, setLoginFailed] = useState(false);
   const loginSchema = yup.object().shape({
     username: yup.string().required('Обязательно заполнить!'),
@@ -37,7 +34,6 @@ const LoginPage = () => {
           setSubmitting(false);
           const { from } = location.state || { from: { pathname: '/' } };
           history.replace(from);
-          dispatch(setUsername(values.username));
         } catch (e) {
           console.log(e);
           setLoginFailed(true);
