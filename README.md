@@ -5,9 +5,13 @@
 ## Used
 
 React
+
 React-bootstrap
+
 React-router-dom
+
 Redux
+
 i18next
 
 ## [Link to the chat page](https://shielded-spire-13127.herokuapp.com/)
