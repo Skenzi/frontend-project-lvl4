@@ -1,4 +1,4 @@
-[![Actions Status](https://github.com/Skenzi/frontend-project-lvl4/workflows/hexlet-check/badge.svg)](https://github.com/Foppp/frontend-project-lvl4/actions)
+[![Actions Status](https://github.com/Skenzi/frontend-project-lvl4/workflows/hexlet-check/badge.svg)](https://github.com/Skenzi/frontend-project-lvl4/actions)
 
 # Chat App
 
