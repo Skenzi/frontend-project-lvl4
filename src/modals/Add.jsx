@@ -1,13 +1,15 @@
 import React, { useEffect, useRef } from 'react';
 import { Formik } from 'formik';
-import { Button, Form } from 'react-bootstrap';
+import {
+  Form, Modal, FormGroup, FormControl,
+} from 'react-bootstrap';
 import * as yup from 'yup';
-import { Modal, FormGroup, FormControl } from 'react-bootstrap';
+
 import { useSelector } from 'react-redux';
 
 const AddModal = ({ onHide, socket, modalInfo }) => {
   const inputRef = useRef();
-  const {channels} = useSelector((state) => state.channelsData);
+  const { channels } = useSelector((state) => state.channelsData);
   const validationSchema = yup.object().shape({
     body: yup.string().notOneOf(channels.map((channel) => channel.name)),
   });
@@ -22,30 +24,28 @@ const AddModal = ({ onHide, socket, modalInfo }) => {
 
       <Modal.Body>
         <Formik
-          initialValues = {{
+          initialValues={{
             body: '',
           }}
           validationSchema={validationSchema}
-          onSubmit = {(values) => {
+          onSubmit={(values) => {
             try {
               socket.emit('newChannel', { name: values.body });
               onHide();
             } catch (e) {
-              console.log(e)
+              console.log(e);
             }
-            }
-          }
+          }}
         >
           {({
-        values,
-        errors,
-        touched,
-        handleBlur,
-        handleChange,
-        handleSubmit,
-        isSubmitting,
-      }) => {
-            return <Form onSubmit={handleSubmit}>
+            values,
+            errors,
+            touched,
+            handleBlur,
+            handleChange,
+            handleSubmit,
+          }) => (
+            <Form onSubmit={handleSubmit}>
               <FormGroup>
                 <FormControl
                   onChange={handleChange}
@@ -60,7 +60,7 @@ const AddModal = ({ onHide, socket, modalInfo }) => {
               <input type="submit" className="btn btn-primary" value="submit" />
               <Form.Control.Feedback type="invalid">Already exist</Form.Control.Feedback>
             </Form>
-          }}
+          )}
         </Formik>
       </Modal.Body>
     </Modal>

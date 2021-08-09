@@ -21,7 +21,6 @@ const LoginPage = () => {
     username: yup.string().required('Обязательно заполнить!'),
     password: yup.string().required('Обязательно заполнить!'),
   });
-  console.log(loginFailed)
   return (
     <Formik
       initialValues={{ username: '', password: '' }}
@@ -57,43 +56,43 @@ const LoginPage = () => {
           <div className="row justify-content-center pt-5">
             <div className="col-sm-4">
               <div className="card shadow-sm">
-              <div className="card-body">
-              <Form onSubmit={handleSubmit}>
-                <Form.Group className="mb-3">
-                  <Form.Label htmlFor="username">{i18n.t('login.username')}</Form.Label>
-                  <Form.Control
-                    type="text"
-                    name="username"
-                    id="username"
-                    placeholder="Enter username"
-                    onChange={handleChange}
-                    isInvalid={loginFailed}
-                    disabled={isSubmitting}
-                    value={values.username}
-                  />
-                  {errors.username && touched.username ? (<p className="text-danger">{errors.username}</p>) : null}
-                </Form.Group>
-                <Form.Group className="mb-3">
-                  <Form.Label htmlFor="password">{i18n.t('login.password')}</Form.Label>
-                  <Form.Control
-                    type="password"
-                    name="password"
-                    id="password"
-                    placeholder="Password"
-                    onChange={handleChange}
-                    isInvalid={loginFailed}
-                    disabled={isSubmitting}
-                    value={values.password}
-                  />
-                  {errors.password && touched.password ? (<p className="text-danger">{errors.password}</p>) : null}
-                  <Form.Control.Feedback type="invalid">{i18n.t('login.fillError')}</Form.Control.Feedback>
-                </Form.Group>
-                
-                <Button variant="primary" type="submit" disabled={isSubmitting}>
-                  {i18n.t('login.logIn')}
-                </Button>
-              </Form>
-              </div>
+                <div className="card-body">
+                  <Form onSubmit={handleSubmit}>
+                    <Form.Group className="mb-3">
+                      <Form.Label htmlFor="username">{i18n.t('login.username')}</Form.Label>
+                      <Form.Control
+                        type="text"
+                        name="username"
+                        id="username"
+                        placeholder="Enter username"
+                        onChange={handleChange}
+                        isInvalid={loginFailed}
+                        disabled={isSubmitting}
+                        value={values.username}
+                      />
+                      {errors.username && touched.username ? (<p className="text-danger">{errors.username}</p>) : null}
+                    </Form.Group>
+                    <Form.Group className="mb-3">
+                      <Form.Label htmlFor="password">{i18n.t('login.password')}</Form.Label>
+                      <Form.Control
+                        type="password"
+                        name="password"
+                        id="password"
+                        placeholder="Password"
+                        onChange={handleChange}
+                        isInvalid={loginFailed}
+                        disabled={isSubmitting}
+                        value={values.password}
+                      />
+                      {errors.password && touched.password ? (<p className="text-danger">{errors.password}</p>) : null}
+                      <Form.Control.Feedback type="invalid">{i18n.t('login.fillError')}</Form.Control.Feedback>
+                    </Form.Group>
+
+                    <Button variant="primary" type="submit" disabled={isSubmitting}>
+                      {i18n.t('login.logIn')}
+                    </Button>
+                  </Form>
+                </div>
               </div>
             </div>
           </div>

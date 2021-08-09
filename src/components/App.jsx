@@ -74,7 +74,7 @@ const SignUpButton = () => {
   const i18n = useTranslation();
   return auth.signUp && !auth.loggedIn ? (
     <Button as={Link} to="/signup">
-      {i18n.t('signUp')}
+      {i18n.t('signup.signUp')}
     </Button>
   ) : null;
 };
@@ -82,30 +82,30 @@ const SignUpButton = () => {
 const App = ({ socket }) => (
   <AuthProvider>
     <div className="d-flex flex-column h-100">
-    <Router>
-      <Navbar bg="light" variant="light" expand="lg">
-        <Container>
-          <Navbar.Brand as={Link} to="/">Hexlet Chat</Navbar.Brand>
-          <AuthButton />
-          <SignUpButton />
-        </Container>
-      </Navbar>
+      <Router>
+        <Navbar bg="light" variant="light" expand="lg">
+          <Container>
+            <Navbar.Brand as={Link} to="/">Hexlet Chat</Navbar.Brand>
+            <AuthButton />
+            <SignUpButton />
+          </Container>
+        </Navbar>
 
-      <Switch>
-        <Route path="/login">
-          <LoginPage />
-        </Route>
-        <Route path="/signup">
-          <SignUpPage />
-        </Route>
-        <ChatRoute path="/">
-          <ChatPage socket={socket} />
-        </ChatRoute>
-        <Route path="*">
-          <NotFoundPage />
-        </Route>
-      </Switch>
-    </Router>
+        <Switch>
+          <Route path="/login">
+            <LoginPage />
+          </Route>
+          <Route path="/signup">
+            <SignUpPage />
+          </Route>
+          <ChatRoute path="/">
+            <ChatPage socket={socket} />
+          </ChatRoute>
+          <Route path="*">
+            <NotFoundPage />
+          </Route>
+        </Switch>
+      </Router>
     </div>
   </AuthProvider>
 );
