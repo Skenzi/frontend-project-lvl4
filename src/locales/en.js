@@ -1,16 +1,20 @@
 const en = {
   translation: {
     send: 'Send',
+    required: 'Required to fill',
+    username: 'Username',
+    password: 'Password',
     login: {
       logIn: 'Log In',
       logOut: 'Log Out',
-      username: 'Username',
-      password: 'Password',
-      fillError: 'The username or password is incorrect',
     },
     signup: {
       signUp: 'Sign Up',
+      confirmPassword: 'Confirm Password',
+    },
+    errors: {
       userExist: 'This user is exist',
+      fillError: 'The username or password is incorrect',
       confirmPassword: 'Passwords must match',
     },
     channels: 'Channels',
@@ -18,5 +22,5 @@ const en = {
     inputMessagePlaceholder: 'Enter message...',
   },
 };
-
+// Passwords must match
 export default en;

@@ -15,8 +15,8 @@ const LoginPage = () => {
   const history = useHistory();
   const [loginFailed, setLoginFailed] = useState(false);
   const loginSchema = yup.object().shape({
-    username: yup.string().required('Обязательно заполнить!'),
-    password: yup.string().required('Обязательно заполнить!'),
+    username: yup.string().required(),
+    password: yup.string().required(),
   });
   return (
     <Formik
@@ -35,8 +35,12 @@ const LoginPage = () => {
           const { from } = location.state || { from: { pathname: '/' } };
           history.replace(from);
         } catch (e) {
-          console.log(e);
           setLoginFailed(true);
+          if (e.isAxiosError) {
+            console.log(e);
+          } else {
+            console.log(e);
+          }
         }
       }}
     >
@@ -55,12 +59,12 @@ const LoginPage = () => {
                 <div className="card-body">
                   <Form onSubmit={handleSubmit}>
                     <Form.Group className="mb-3">
-                      <Form.Label htmlFor="username">{i18n.t('login.username')}</Form.Label>
+                      <Form.Label htmlFor="username">{i18n.t('username')}</Form.Label>
                       <Form.Control
                         type="text"
                         name="username"
                         id="username"
-                        placeholder="Enter username"
+                        placeholder={i18n.t('username')}
                         onChange={handleChange}
                         isInvalid={loginFailed}
                         disabled={isSubmitting}
@@ -69,19 +73,19 @@ const LoginPage = () => {
                       {errors.username && touched.username ? (<p className="text-danger">{errors.username}</p>) : null}
                     </Form.Group>
                     <Form.Group className="mb-3">
-                      <Form.Label htmlFor="password">{i18n.t('login.password')}</Form.Label>
+                      <Form.Label htmlFor="password">{i18n.t('password')}</Form.Label>
                       <Form.Control
                         type="password"
                         name="password"
                         id="password"
-                        placeholder="Password"
+                        placeholder={i18n.t('password')}
                         onChange={handleChange}
                         isInvalid={loginFailed}
                         disabled={isSubmitting}
                         value={values.password}
                       />
                       {errors.password && touched.password ? (<p className="text-danger">{errors.password}</p>) : null}
-                      <Form.Control.Feedback type="invalid">{i18n.t('login.fillError')}</Form.Control.Feedback>
+                      <Form.Control.Feedback type="invalid">{i18n.t('errors.fillError')}</Form.Control.Feedback>
                     </Form.Group>
 
                     <Button variant="primary" type="submit" disabled={isSubmitting}>

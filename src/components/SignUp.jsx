@@ -42,8 +42,12 @@ const SignUpPage = () => {
           const { from } = location.state || { from: { pathname: '/' } };
           history.replace(from);
         } catch (e) {
-          console.log(e);
           isUserExist();
+          if (e.isAxiosError) {
+            console.log(e);
+          } else {
+            console.log(e);
+          }
         }
       }}
     >
@@ -62,12 +66,12 @@ const SignUpPage = () => {
                 <div className="card-body">
                   <Form onSubmit={handleSubmit}>
                     <Form.Group className="mb-3">
-                      <Form.Label htmlFor="username">Username</Form.Label>
+                      <Form.Label htmlFor="username">{i18n.t('username')}</Form.Label>
                       <Form.Control
                         type="text"
                         name="username"
                         id="username"
-                        placeholder="Enter username"
+                        placeholder={i18n.t('username')}
                         onChange={handleChange}
                         isInvalid={userExist}
                         disabled={isSubmitting}
@@ -76,12 +80,12 @@ const SignUpPage = () => {
                       {errors.username && touched.username ? (<p className="text-danger">{errors.username}</p>) : null}
                     </Form.Group>
                     <Form.Group className="mb-3">
-                      <Form.Label htmlFor="password">Password</Form.Label>
+                      <Form.Label htmlFor="password">{i18n.t('password')}</Form.Label>
                       <Form.Control
                         type="password"
                         name="password"
                         id="password"
-                        placeholder="Password"
+                        placeholder={i18n.t('password')}
                         onChange={handleChange}
                         isInvalid={userExist}
                         disabled={isSubmitting}
@@ -90,22 +94,22 @@ const SignUpPage = () => {
                       {errors.password && touched.password ? (<p className="text-danger">{errors.password}</p>) : null}
                     </Form.Group>
                     <Form.Group className="mb-3">
-                      <Form.Label htmlFor="repeatPassword">Confirm Password</Form.Label>
+                      <Form.Label htmlFor="confirmPassword">{i18n.t('signup.confirmPassword')}</Form.Label>
                       <Form.Control
                         type="password"
                         name="confirmPassword"
                         id="confirmPassword"
-                        placeholder="Confirm Password"
+                        placeholder={i18n.t('password')}
                         onChange={handleChange}
                         isInvalid={userExist}
                         disabled={isSubmitting}
-                        value={values.repeatPassword}
+                        value={values.confirmPassword}
                       />
-                      {(errors.repeatPassword && touched.repeatPassword) ? (<p className="text-danger">{errors.repeatPassword}</p>) : null}
-                      <Form.Control.Feedback type="invalid">{i18n.t('signup.userExist')}</Form.Control.Feedback>
+                      {(errors.confirmPassword && touched.confirmPassword) ? (<p className="text-danger">{errors.confirmPassword}</p>) : null}
+                      <Form.Control.Feedback type="invalid">{i18n.t('errors.userExist')}</Form.Control.Feedback>
                     </Form.Group>
                     <Button variant="primary" type="submit" disabled={isSubmitting}>
-                      Sign Up
+                      {i18n.t('signup.signUp')}
                     </Button>
                   </Form>
                 </div>

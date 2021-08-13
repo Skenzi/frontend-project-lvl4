@@ -1,16 +1,19 @@
 const ru = {
   translation: {
+    username: 'Имя пользователя',
+    password: 'Пароль',
+    required: 'Обязательно заполнить!',
     send: 'Отправить',
     login: {
       logIn: 'Войти',
       logOut: 'Выйти',
-      username: 'Имя пользователя',
-      password: 'Пароль',
-      fillError: 'Неверно введено имя пользователя или пароль',
     },
     signup: {
       signUp: 'Зарегистрироваться',
+    },
+    errors: {
       userExist: 'Пользователь уже существует',
+      fillError: 'Неверно введено имя пользователя или пароль',
       confirmPassword: 'Пароли не совпадают',
     },
     channels: 'Каналы',

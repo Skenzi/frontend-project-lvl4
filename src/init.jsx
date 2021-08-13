@@ -5,6 +5,7 @@ import { io } from 'socket.io-client';
 import i18n from 'i18next';
 // import * as yup from 'yup';
 import { initReactI18next } from 'react-i18next';
+import * as yup from 'yup';
 import App from './components/App.jsx';
 import store from './store.js';
 import resources from './locales/index.js';
@@ -24,11 +25,12 @@ const init = () => {
         escapeValue: false,
       },
     });
-  /* yup.setLocale({
+  yup.setLocale({
     mixed: {
-      notOneOf: instance.t('signup.userExist'),
+      required: instance.t('required'),
+      notOneOf: instance.t('errors.userExist'),
     },
-  }); */
+  });
   const socket = io();
 
   render(
