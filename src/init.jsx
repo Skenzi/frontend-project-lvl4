@@ -8,8 +8,7 @@ import App from './components/App.jsx';
 import store from './store.js';
 import resources from './locales/index.js';
 
-const init = (test) => {
-  console.log(test);
+const init = () => {
   if (process.env.NODE_ENV !== 'production') {
     localStorage.debug = 'chat:*';
   }
@@ -30,7 +29,7 @@ const init = (test) => {
       notOneOf: instance.t('errors.userExist'),
     },
   });
-  const socket = test;
+  const socket = io();
   return (
     <Provider store={store}>
       <App socket={socket} />

@@ -1,11 +1,20 @@
 import React, { useEffect, useRef } from 'react';
-import { useFormik } from 'formik';
-import { Modal, FormGroup, FormControl } from 'react-bootstrap';
-import { useDispatch } from 'react-redux';
+import { useTranslation } from 'react-i18next';
+import * as yup from 'yup';
+import { Formik } from 'formik';
+import {
+  Modal, FormGroup, FormControl, Form,
+} from 'react-bootstrap';
+import { useDispatch, useSelector } from 'react-redux';
 import { renameChannel } from '../features/channelsSlice.js';
 
 const RenameModal = ({ onHide, modalInfo, socket }) => {
   const dispatch = useDispatch();
+  const i18n = useTranslation();
+  const { channels } = useSelector((state) => state.channelsData);
+  const validationSchema = yup.object().shape({
+    body: yup.string().notOneOf(channels.map((channel) => channel.name)),
+  });
   const socketRef = useRef(socket);
   const inputRef = useRef();
   useEffect(() => {
@@ -14,37 +23,49 @@ const RenameModal = ({ onHide, modalInfo, socket }) => {
       dispatch(renameChannel(renamingChannel));
     });
   }, [socketRef]);
-  const f = useFormik({
-    initialValues: {
-      body: modalInfo.item.name,
-    },
-    onSubmit: (values) => {
-      const renamingChannel = { ...modalInfo.item, name: values.body };
-      socket.emit('renameChannel', renamingChannel);
-      onHide();
-    },
-  });
   return (
     <Modal show={modalInfo.show} onHide={onHide}>
       <Modal.Header closeButton onHide={onHide}>
-        <Modal.Title>Rename</Modal.Title>
+        <Modal.Title>{i18n.t('modal.renameChannel')}</Modal.Title>
       </Modal.Header>
 
       <Modal.Body>
-        <form onSubmit={f.handleSubmit}>
-          <FormGroup>
-            <FormControl
-              required
-              onChange={f.handleChange}
-              onBlur={f.handleBlur}
-              value={f.values.body}
-              data-testid="rename-channel"
-              name="body"
-              ref={inputRef}
-            />
-          </FormGroup>
-          <input type="submit" className="btn btn-primary" value="Submit" />
-        </form>
+        <Formik
+          initialValues={{
+            body: modalInfo.item.name,
+          }}
+          validationSchema={validationSchema}
+          onSubmit={(values) => {
+            const renamingChannel = { ...modalInfo.item, name: values.body };
+            socket.emit('renameChannel', renamingChannel);
+            onHide();
+          }}
+        >
+          {({
+            values,
+            errors,
+            touched,
+            handleBlur,
+            handleChange,
+            handleSubmit,
+          }) => (
+            <Form onSubmit={handleSubmit}>
+              <FormGroup>
+                <FormControl
+                  required
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  value={values.body}
+                  data-testid="rename-channel"
+                  name="body"
+                  ref={inputRef}
+                />
+              </FormGroup>
+              {errors.body && touched.body ? (<p className="text-danger">{i18n.t('errors.channelExist')}</p>) : null}
+              <button type="submit" className="btn btn-primary">{i18n.t('send')}</button>
+            </Form>
+          )}
+        </Formik>
       </Modal.Body>
     </Modal>
   );

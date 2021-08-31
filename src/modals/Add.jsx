@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Formik } from 'formik';
 import {
   Form, Modal, FormGroup, FormControl,
@@ -8,6 +9,7 @@ import { useSelector } from 'react-redux';
 
 const AddModal = ({ onHide, socket, modalInfo }) => {
   const inputRef = useRef();
+  const i18n = useTranslation();
   const { channels } = useSelector((state) => state.channelsData);
   const validationSchema = yup.object().shape({
     body: yup.string().notOneOf(channels.map((channel) => channel.name)),
@@ -18,7 +20,7 @@ const AddModal = ({ onHide, socket, modalInfo }) => {
   return (
     <Modal show={modalInfo.show} onHide={onHide}>
       <Modal.Header closeButton>
-        <Modal.Title>Add channel</Modal.Title>
+        <Modal.Title>{i18n.t('modal.addChannel')}</Modal.Title>
       </Modal.Header>
 
       <Modal.Body>
@@ -54,10 +56,9 @@ const AddModal = ({ onHide, socket, modalInfo }) => {
                   name="body"
                   ref={inputRef}
                 />
-                {errors.body && touched.body ? (<p className="text-danger">Канал с таким именем уже существует</p>) : null}
+                {errors.body && touched.body ? (<p className="text-danger">{i18n.t('errors.channelExist')}</p>) : null}
               </FormGroup>
-              <input type="submit" className="btn btn-primary" value="submit" />
-              <Form.Control.Feedback type="invalid">Already exist</Form.Control.Feedback>
+              <button type="submit" className="btn btn-primary" value="submit">{i18n.t('send')}</button>
             </Form>
           )}
         </Formik>
