@@ -1,6 +1,6 @@
 import React from 'react';
 import { Provider } from 'react-redux';
-import { io } from 'socket.io-client';
+// import { io } from 'socket.io-client';
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import * as yup from 'yup';
@@ -8,7 +8,7 @@ import App from './components/App.jsx';
 import store from './store.js';
 import resources from './locales/index.js';
 
-const init = () => {
+const init = (socket) => {
   if (process.env.NODE_ENV !== 'production') {
     localStorage.debug = 'chat:*';
   }
@@ -29,7 +29,7 @@ const init = () => {
       notOneOf: instance.t('errors.userExist'),
     },
   });
-  const socket = io();
+  // const socket = io();
   return (
     <Provider store={store}>
       <App socket={socket} />
