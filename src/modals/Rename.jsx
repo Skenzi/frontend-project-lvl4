@@ -5,24 +5,18 @@ import { Formik } from 'formik';
 import {
   Modal, FormGroup, FormControl, Form,
 } from 'react-bootstrap';
-import { useDispatch, useSelector } from 'react-redux';
-import { renameChannel } from '../features/channelsSlice.js';
+import { useSelector } from 'react-redux';
 
 const RenameModal = ({ onHide, modalInfo, socket }) => {
-  const dispatch = useDispatch();
   const i18n = useTranslation();
   const { channels } = useSelector((state) => state.channelsData);
   const validationSchema = yup.object().shape({
     body: yup.string().notOneOf(channels.map((channel) => channel.name)),
   });
-  const socketRef = useRef(socket);
   const inputRef = useRef();
   useEffect(() => {
     inputRef.current.select();
-    socketRef.current.on('renameChannel', (renamingChannel) => {
-      dispatch(renameChannel(renamingChannel));
-    });
-  }, [socketRef]);
+  });
   return (
     <Modal show={modalInfo.show} onHide={onHide}>
       <Modal.Header closeButton onHide={onHide}>

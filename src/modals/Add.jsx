@@ -5,24 +5,18 @@ import {
   Form, Modal, FormGroup, FormControl,
 } from 'react-bootstrap';
 import * as yup from 'yup';
-import { useDispatch, useSelector } from 'react-redux';
-import { addChannel } from '../features/channelsSlice.js';
+import { useSelector } from 'react-redux';
 
 const AddModal = ({ onHide, socket, modalInfo }) => {
-  const dispatch = useDispatch();
   const inputRef = useRef();
   const i18n = useTranslation();
   const { channels } = useSelector((state) => state.channelsData);
   const validationSchema = yup.object().shape({
     body: yup.string().notOneOf(channels.map((channel) => channel.name)),
   });
-  const socketRef = useRef(socket);
   useEffect(() => {
-    socketRef.current.on('newChannel', (newChannel) => {
-      dispatch(addChannel(newChannel));
-    });
     inputRef.current.focus();
-  }, [socketRef]);
+  });
   return (
     <Modal show={modalInfo.show} onHide={onHide}>
       <Modal.Header closeButton>

@@ -1,18 +1,9 @@
-import React, { useRef, useEffect } from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Modal } from 'react-bootstrap';
-import { useDispatch } from 'react-redux';
-import { removeChannel } from '../features/channelsSlice';
 
 const RemoveModal = ({ onHide, modalInfo, socket }) => {
-  const dispatch = useDispatch();
   const i18n = useTranslation();
-  const removeModalRef = useRef(socket);
-  useEffect(() => {
-    removeModalRef.current.on('removeChannel', (removedChannel) => {
-      dispatch(removeChannel(removedChannel));
-    });
-  }, [removeModalRef]);
   const handleRemove = () => {
     socket.emit('removeChannel', modalInfo.item);
     onHide();
