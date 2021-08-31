@@ -17,9 +17,9 @@ const SignUpPage = () => {
   const location = useLocation();
   const history = useHistory();
   const signUpSchema = yup.object().shape({
-    username: yup.string().min(3).max(30).required(),
-    password: yup.string().min(6).max(40).required(),
-    confirmPassword: yup.string().oneOf([yup.ref('password'), null], 'Passwords must match'),
+    username: yup.string().min(3).required(),
+    password: yup.string().min(6).max(20).required(),
+    confirmPassword: yup.string().oneOf([yup.ref('password'), null], i18n.t('errors.confirmPasswords')),
   });
   return (
     <Formik
@@ -65,6 +65,7 @@ const SignUpPage = () => {
               <div className="card shadow-sm">
                 <div className="card-body">
                   <Form onSubmit={handleSubmit}>
+                    <h1 className="text-center mb-4">{i18n.t('signup.register')}</h1>
                     <Form.Group className="mb-3">
                       <Form.Label htmlFor="username">{i18n.t('username')}</Form.Label>
                       <Form.Control
@@ -77,7 +78,7 @@ const SignUpPage = () => {
                         disabled={isSubmitting}
                         value={values.username}
                       />
-                      {errors.username && touched.username ? (<p className="text-danger">{errors.username}</p>) : null}
+                      {errors.username && touched.username ? (<p className="text-danger">{i18n.t('errors.usernameCountSymbols')}</p>) : null}
                     </Form.Group>
                     <Form.Group className="mb-3">
                       <Form.Label htmlFor="password">{i18n.t('password')}</Form.Label>
@@ -91,7 +92,7 @@ const SignUpPage = () => {
                         disabled={isSubmitting}
                         value={values.password}
                       />
-                      {errors.password && touched.password ? (<p className="text-danger">{errors.password}</p>) : null}
+                      {errors.password && touched.password ? (<p className="text-danger">{i18n.t('errors.passwordCountSymbols')}</p>) : null}
                     </Form.Group>
                     <Form.Group className="mb-3">
                       <Form.Label htmlFor="confirmPassword">{i18n.t('signup.confirmPassword')}</Form.Label>

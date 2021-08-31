@@ -51,7 +51,7 @@ const AddModal = ({ onHide, socket, modalInfo }) => {
                   onChange={handleChange}
                   onBlur={handleBlur}
                   value={values.body}
-                  data-testid="input-body"
+                  data-testid="add-channel"
                   name="body"
                   ref={inputRef}
                 />

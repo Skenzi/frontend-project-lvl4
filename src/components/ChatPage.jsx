@@ -116,9 +116,7 @@ const MessagesForm = ({ socket }) => {
         onSubmit={({ message }, actions) => {
           actions.resetForm();
           const currentMessage = { username, text: message, channelId: currentChannelId };
-          socket.emit('newMessage', currentMessage, (responce) => {
-            console.log(responce, 'responce');
-          });
+          socket.emit('newMessage', currentMessage);
         }}
       >
         {({

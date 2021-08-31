@@ -38,7 +38,7 @@ const RenameModal = ({ onHide, modalInfo, socket }) => {
               onChange={f.handleChange}
               onBlur={f.handleBlur}
               value={f.values.body}
-              data-testid="input-body"
+              data-testid="rename-channel"
               name="body"
               ref={inputRef}
             />

@@ -58,13 +58,14 @@ const LoginPage = () => {
               <div className="card shadow-sm">
                 <div className="card-body">
                   <Form onSubmit={handleSubmit}>
+                    <h1 className="text-center mb-4">{i18n.t('login.logIn')}</h1>
                     <Form.Group className="mb-3">
                       <Form.Label htmlFor="username">{i18n.t('username')}</Form.Label>
                       <Form.Control
                         type="text"
                         name="username"
                         id="username"
-                        placeholder={i18n.t('username')}
+                        placeholder={i18n.t('nickname')}
                         onChange={handleChange}
                         isInvalid={loginFailed}
                         disabled={isSubmitting}

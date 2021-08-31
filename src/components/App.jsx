@@ -74,7 +74,7 @@ const SignUpButton = () => {
   const i18n = useTranslation();
   return auth.signUp && !auth.loggedIn ? (
     <Button as={Link} to="/signup">
-      {i18n.t('signup.signUp')}
+      {i18n.t('signup.register')}
     </Button>
   ) : null;
 };

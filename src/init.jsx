@@ -38,7 +38,6 @@ const init = () => {
     </Provider>,
     document.querySelector('#chat'),
   );
-  console.log('it works!');
 };
 
 init();
