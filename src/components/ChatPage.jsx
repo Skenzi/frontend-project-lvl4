@@ -23,6 +23,7 @@ const ChannelsList = ({ showModal }) => {
             <div className="d-flex dropdown btn-group">
               <button
                 type="button"
+                role="button"
                 className={`${classChannelActive} w-100 rounded-0 text-left text-truncate`}
                 onClick={() => {
                   dispatch(swapCurrentChannelId(channel.id));
@@ -34,10 +35,10 @@ const ChannelsList = ({ showModal }) => {
               </button>
               {channel.removable ? (
                 <>
-                  <button type="button" id="dLabel" className={`${classChannelActive} dropdown-toggle dropdown-toggle-split`} data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><span className="sr-only">Toggle Dropdown</span></button>
+                  <button type="button" id="dLabel" role="button" className={`${classChannelActive} dropdown-toggle dropdown-toggle-split`} data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><span className="sr-only">Toggle Dropdown</span></button>
                   <div className="dropdown-menu" aria-labelledby="dLabel">
-                    <button type="button" className="dropdown-item" onClick={handleClickMenu('removing', channel)}>{i18n.t('remove')}</button>
-                    <button type="button" className="dropdown-item" onClick={handleClickMenu('renaming', channel)}>{i18n.t('rename')}</button>
+                    <button type="button" role="button" className="dropdown-item" onClick={handleClickMenu('removing', channel)}>{i18n.t('remove')}</button>
+                    <button type="button" role="button" className="dropdown-item" onClick={handleClickMenu('renaming', channel)}>{i18n.t('rename')}</button>
                   </div>
                 </>
               ) : null}
@@ -55,7 +56,7 @@ const ChannelsContainer = ({ showModal }) => {
     <>
       <div className="d-flex justify-content-between mb-2 pl-4 pr-2">
         <span>{i18n.t('channels')}</span>
-        <button type="button" className="p-0 text-primary btn btn-group-vertical" onClick={() => showModal('adding')}>+</button>
+        <button type="button" role="button" className="p-0 text-primary btn btn-group-vertical" onClick={() => showModal('adding')}>+</button>
       </div>
       <ChannelsList showModal={showModal} />
     </>

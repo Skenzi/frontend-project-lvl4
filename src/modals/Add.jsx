@@ -56,8 +56,8 @@ const AddModal = ({ onHide, socket, modalInfo }) => {
                   name="body"
                   ref={inputRef}
                 />
-                {errors.body && touched.body ? (<p className="text-danger">{i18n.t('errors.channelExist')}</p>) : null}
               </FormGroup>
+              {errors.body && touched.body ? (<p className="text-danger">{i18n.t('errors.channelExist')}</p>) : null}
               <button type="submit" role="button" className="btn btn-primary" value="submit">
                 {i18n.t('send')}
               </button>
