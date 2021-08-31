@@ -31,7 +31,7 @@ const init = () => {
     },
   });
   const socket = io();
-
+  console.log(document.querySelector('#chat'));
   render(
     <Provider store={store}>
       <App socket={socket} />
