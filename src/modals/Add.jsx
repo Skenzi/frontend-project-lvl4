@@ -16,16 +16,13 @@ const AddModal = ({ onHide, socket, modalInfo }) => {
   const validationSchema = yup.object().shape({
     body: yup.string().notOneOf(channels.map((channel) => channel.name)),
   });
+  const socketRef = useRef(socket);
   useEffect(() => {
-    const socketRef = useRef(socket);
-    useEffect(() => {
-      inputRef.current.select();
-      socketRef.current.on('newChannel', (newChannel) => {
-        dispatch(addChannel(newChannel));
-      });
-    }, [socketRef]);
+    socketRef.current.on('newChannel', (newChannel) => {
+      dispatch(addChannel(newChannel));
+    });
     inputRef.current.focus();
-  });
+  }, [socketRef]);
   return (
     <Modal show={modalInfo.show} onHide={onHide}>
       <Modal.Header closeButton>
