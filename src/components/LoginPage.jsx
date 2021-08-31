@@ -5,7 +5,7 @@ import { Button, Form } from 'react-bootstrap';
 import { useLocation, useHistory } from 'react-router-dom';
 import * as yup from 'yup';
 import axios from 'axios';
-import useAuth from '../hooks/index.jsx';
+import useAuth from '../hooks/index.js';
 import routes from '../routes.js';
 
 const LoginPage = () => {

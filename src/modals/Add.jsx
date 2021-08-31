@@ -4,7 +4,6 @@ import {
   Form, Modal, FormGroup, FormControl,
 } from 'react-bootstrap';
 import * as yup from 'yup';
-
 import { useSelector } from 'react-redux';
 
 const AddModal = ({ onHide, socket, modalInfo }) => {

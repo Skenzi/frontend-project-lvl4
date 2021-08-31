@@ -6,7 +6,7 @@ import axios from 'axios';
 import * as yup from 'yup';
 import { useTranslation } from 'react-i18next';
 import routes from '../routes.js';
-import useAuth from '../hooks/index.jsx';
+import useAuth from '../hooks/index.js';
 
 const SignUpPage = () => {
   const [userExist, setSignUp] = useState(false);

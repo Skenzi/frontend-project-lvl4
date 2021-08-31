@@ -14,8 +14,8 @@ import LoginPage from './LoginPage.jsx';
 import ChatPage from './ChatPage.jsx';
 import NotFoundPage from './NotFoundPage.jsx';
 import SignUpPage from './SignUp.jsx';
-import authContext from '../context/index.jsx';
-import useAuth from '../hooks/index.jsx';
+import authContext from '../context/index.js';
+import useAuth from '../hooks/index.js';
 
 const checkToken = () => {
   const userId = JSON.parse(localStorage.getItem('userId'));
