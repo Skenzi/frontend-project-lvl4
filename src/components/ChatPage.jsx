@@ -29,8 +29,7 @@ const ChannelsList = ({ showModal }) => {
                   dispatch(swapCurrentChannelId(channel.id));
                 }}
               >
-                #
-                {' '}
+                <span className="me-1">#</span>
                 {channel.name}
               </button>
               {channel.removable ? (
