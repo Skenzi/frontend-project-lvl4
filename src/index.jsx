@@ -6,4 +6,4 @@ import '../assets/application.scss';
 import 'bootstrap';
 import init from './init.jsx';
 
-export default init;
+init();

@@ -90,8 +90,7 @@ const MessagesBox = () => {
       {currentMessages.map(({ text, username, id }) => (
         <div className="text-break mb-2" key={id}>
           <b>{username}</b>
-          :
-          {text}
+          {`: ${text}`}
         </div>
       ))}
     </div>
