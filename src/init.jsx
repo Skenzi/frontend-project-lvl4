@@ -3,7 +3,6 @@ import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import { io } from 'socket.io-client';
 import i18n from 'i18next';
-// import * as yup from 'yup';
 import { initReactI18next } from 'react-i18next';
 import * as yup from 'yup';
 import App from './components/App.jsx';

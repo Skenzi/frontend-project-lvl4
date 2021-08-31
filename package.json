@@ -7,6 +7,12 @@
   "engines": {
     "node": "14.x"
   },
+  "babel": {
+    "presets": [
+      "@babel/env",
+      "@babel/react"
+    ]
+  },
   "scripts": {
     "test": "echo 'no tests for this project'",
     "prebuild": "rm -rf dist",
