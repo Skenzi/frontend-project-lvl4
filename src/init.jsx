@@ -1,5 +1,4 @@
 import React from 'react';
-import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import { io } from 'socket.io-client';
 import i18n from 'i18next';
@@ -31,11 +30,10 @@ const init = () => {
     },
   });
   const socket = io();
-  render(
+  return (
     <Provider store={store}>
       <App socket={socket} />
-    </Provider>,
-    document.querySelector('#chat'),
+    </Provider>
   );
 };
 
