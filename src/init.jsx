@@ -30,7 +30,7 @@ const init = (test) => {
       notOneOf: instance.t('errors.userExist'),
     },
   });
-  const socket = io();
+  const socket = test;
   return (
     <Provider store={store}>
       <App socket={socket} />

@@ -163,7 +163,6 @@ const ChatPage = ({ socket }) => {
   const hideModal = () => setModalInfo({ type: null, item: null, show: false });
   const dispatch = useDispatch();
   useEffect(() => {
-    console.log('test1');
     dispatch(fetchContent());
   }, []);
   return (
