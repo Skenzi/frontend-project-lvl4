@@ -23,12 +23,12 @@ const ChannelsList = ({ showModal }) => {
             <div className="d-flex dropdown btn-group">
               <button
                 type="button"
-                role="button"
                 className={`${classChannelActive} w-100 rounded-0 text-left text-truncate`}
                 onClick={() => {
                   dispatch(swapCurrentChannelId(channel.id));
                 }}
               >
+                <span className="mr-1">#</span>
                 {channel.name}
               </button>
               {channel.removable ? (
