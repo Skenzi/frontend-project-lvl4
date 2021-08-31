@@ -33,10 +33,10 @@ const ChannelsList = ({ showModal }) => {
               </button>
               {channel.removable ? (
                 <>
-                  <button type="button" id="dLabel" role="button" className={`${classChannelActive} dropdown-toggle dropdown-toggle-split`} data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><span className="sr-only">Toggle Dropdown</span></button>
+                  <button type="button" id="dLabel" className={`${classChannelActive} dropdown-toggle dropdown-toggle-split`} data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><span className="sr-only">Toggle Dropdown</span></button>
                   <div className="dropdown-menu" aria-labelledby="dLabel">
-                    <button type="button" role="button" className="dropdown-item" onClick={handleClickMenu('removing', channel)}>{i18n.t('remove')}</button>
-                    <button type="button" role="button" className="dropdown-item" onClick={handleClickMenu('renaming', channel)}>{i18n.t('rename')}</button>
+                    <button type="button" className="dropdown-item" onClick={handleClickMenu('removing', channel)}>{i18n.t('remove')}</button>
+                    <button type="button" className="dropdown-item" onClick={handleClickMenu('renaming', channel)}>{i18n.t('rename')}</button>
                   </div>
                 </>
               ) : null}
