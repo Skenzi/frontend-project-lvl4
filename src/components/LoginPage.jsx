@@ -86,7 +86,7 @@ const LoginPage = () => {
                         value={values.password}
                       />
                       {errors.password && touched.password ? (<p className="text-danger">{errors.password}</p>) : null}
-                      <Form.Control.Feedback type="invalid">{i18n.t('errors.fillError')}</Form.Control.Feedback>
+                      {loginFailed ? (<Form.Control.Feedback type="invalid">{i18n.t('errors.fillError')}</Form.Control.Feedback>) : null}
                     </Form.Group>
 
                     <Button variant="primary" type="submit" disabled={isSubmitting}>

@@ -107,7 +107,7 @@ const SignUpPage = () => {
                         value={values.confirmPassword}
                       />
                       {(errors.confirmPassword && touched.confirmPassword) ? (<p className="text-danger">{errors.confirmPassword}</p>) : null}
-                      <Form.Control.Feedback type="invalid">{i18n.t('errors.userExist')}</Form.Control.Feedback>
+                      {userExist ? (<Form.Control.Feedback type="invalid">{i18n.t('errors.userExist')}</Form.Control.Feedback>) : null}
                     </Form.Group>
                     <Button variant="primary" type="submit" disabled={isSubmitting}>
                       {i18n.t('signup.signUp')}
