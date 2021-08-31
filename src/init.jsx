@@ -31,7 +31,7 @@ const init = () => {
     },
   });
   const socket = io();
-  console.log(document.querySelector('#chat'));
+  console.log(document);
   console.log(document.querySelector('#container'));
   console.log(document.querySelector('.container'));
   render(
