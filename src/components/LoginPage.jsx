@@ -60,7 +60,7 @@ const LoginPage = () => {
                   <Form onSubmit={handleSubmit}>
                     <h1 className="text-center mb-4">{i18n.t('login.logIn')}</h1>
                     <Form.Group className="mb-3">
-                      <Form.Label htmlFor="username">{i18n.t('username')}</Form.Label>
+                      <Form.Label htmlFor="username">{i18n.t('nickname')}</Form.Label>
                       <Form.Control
                         type="text"
                         name="username"

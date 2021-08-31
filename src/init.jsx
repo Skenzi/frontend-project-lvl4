@@ -8,7 +8,8 @@ import App from './components/App.jsx';
 import store from './store.js';
 import resources from './locales/index.js';
 
-const init = () => {
+const init = (test) => {
+  console.log(test);
   if (process.env.NODE_ENV !== 'production') {
     localStorage.debug = 'chat:*';
   }
