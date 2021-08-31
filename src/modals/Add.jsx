@@ -5,9 +5,11 @@ import {
   Form, Modal, FormGroup, FormControl,
 } from 'react-bootstrap';
 import * as yup from 'yup';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { addChannel } from '../features/channelsSlice.js';
 
 const AddModal = ({ onHide, socket, modalInfo }) => {
+  const dispatch = useDispatch();
   const inputRef = useRef();
   const i18n = useTranslation();
   const { channels } = useSelector((state) => state.channelsData);
@@ -15,6 +17,13 @@ const AddModal = ({ onHide, socket, modalInfo }) => {
     body: yup.string().notOneOf(channels.map((channel) => channel.name)),
   });
   useEffect(() => {
+    const socketRef = useRef(socket);
+    useEffect(() => {
+      inputRef.current.select();
+      socketRef.current.on('newChannel', (newChannel) => {
+        dispatch(addChannel(newChannel));
+      });
+    }, [socketRef]);
     inputRef.current.focus();
   });
   return (
