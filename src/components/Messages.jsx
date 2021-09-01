@@ -1,9 +1,8 @@
-import React, { useEffect, useRef } from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { Formik } from 'formik';
 import { Button, Form } from 'react-bootstrap';
-import { addNewMessage } from '../features/messagesSlice.js';
 
 const MessagesHeader = () => {
   const i18n = useTranslation();
@@ -46,13 +45,6 @@ const MessagesForm = ({ socket }) => {
   const { currentChannelId } = useSelector((state) => state.channelsData);
   const i18n = useTranslation();
   const username = localStorage.getItem('username');
-  const socketRef = useRef(socket);
-  const dispatch = useDispatch();
-  useEffect(() => {
-    socketRef.current.on('newMessage', (newMessage) => {
-      dispatch(addNewMessage(newMessage));
-    });
-  }, [socketRef]);
   return (
     <div className="mt-auto px-5 py-3">
       <Formik

@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { fetchContent } from '../features/channelsSlice.js';
 import MyModal from '../modals/index.jsx';
 import ChannelsContainer from './Channels.jsx';
 import MessagesContainer from './Messages.jsx';
+import {
+  fetchContent,
+} from '../features/channelsSlice';
 
 const ChatPage = ({ socket }) => {
   const [modalInfo, setModalInfo] = useState({ type: null, item: null, show: false });
