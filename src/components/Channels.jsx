@@ -14,6 +14,7 @@ const ChannelsList = ({ showModal }) => {
     <ul id="channelsList" className="nav flex-column nav-pills nav-fill px-2">
       {channels.map((channel) => {
         const classChannelActive = channel.id === currentChannelId ? 'btn btn-secondary' : 'btn';
+        console.log(channel);
         return (
           <li key={channel.id} className="nav-item w-100">
             <div className="d-flex dropdown btn-group" role="group">
