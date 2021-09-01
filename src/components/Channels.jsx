@@ -16,7 +16,7 @@ const ChannelsList = ({ showModal }) => {
         const classChannelActive = channel.id === currentChannelId ? 'btn btn-secondary' : 'btn';
         return (
           <li key={channel.id} className="nav-item w-100">
-            <div className="d-flex dropdown btn-group">
+            <div className="d-flex dropdown btn-group" role="group">
               <button
                 type="button"
                 className={`${classChannelActive} w-100 rounded-0 text-left text-truncate`}
@@ -24,6 +24,7 @@ const ChannelsList = ({ showModal }) => {
                   dispatch(swapCurrentChannelId(channel.id));
                 }}
               >
+                <span className="mr-1">#</span>
                 {channel.name}
               </button>
               {channel.removable ? (
