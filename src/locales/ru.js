@@ -8,6 +8,7 @@ const ru = {
     password: 'Пароль',
     required: 'Обязательно заполнить!',
     send: 'Отправить',
+    cancel: 'Отменить',
     login: {
       logIn: 'Войти',
       logOut: 'Выйти',
@@ -31,8 +32,12 @@ const ru = {
       channelExist: 'Должно быть уникальным',
     },
     channels: 'Каналы',
-    messages: 'сообщений',
-    inputMessagePlaceholder: 'Наберите сообщение...',
+    messages: {
+      message_0: '{{count}} сообщениe',
+      message_1: '{{count}} сообщения',
+      message_2: '{{count}} сообщений',
+    },
+    inputMessagePlaceholder: 'Введите сообщение...',
   },
 };
 

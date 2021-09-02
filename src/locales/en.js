@@ -1,6 +1,7 @@
 const en = {
   translation: {
     send: 'Send',
+    cancel: 'Cancel',
     youSure: 'Are you sure?',
     remove: 'Remove',
     rename: 'Rename',
@@ -31,7 +32,10 @@ const en = {
       channelExist: 'Must be unique',
     },
     channels: 'Channels',
-    messages: 'messages',
+    messages: {
+      message: '{{count}} message',
+      message_plural: '{{count}} messages',
+    },
     inputMessagePlaceholder: 'Enter message...',
   },
 };

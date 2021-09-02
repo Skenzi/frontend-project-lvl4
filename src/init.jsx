@@ -6,12 +6,29 @@ import * as yup from 'yup';
 import App from './components/App.jsx';
 import store from './store.js';
 import resources from './locales/index.js';
+import {
+  addChannel, renameChannel, removeChannel,
+} from './features/channelsSlice';
+import { addNewMessage } from './features/messagesSlice.js';
 
-const init = (socket) => {
+export default async (socket) => {
   if (process.env.NODE_ENV !== 'production') {
     localStorage.debug = 'chat:*';
   }
   const instance = i18n.createInstance();
+  socket.on('newChannel', (newChannel) => {
+    store.dispatch(addChannel(newChannel));
+  });
+  socket.on('removeChannel', (removedChannel) => {
+    store.dispatch(removeChannel(removedChannel));
+  });
+  socket.on('renameChannel', (renamingChannel) => {
+    store.dispatch(renameChannel(renamingChannel));
+  });
+  socket.on('newMessage', (newMessage) => {
+    store.dispatch(addNewMessage(newMessage));
+  });
+
   instance
     .use(initReactI18next)
     .init({
@@ -34,7 +51,3 @@ const init = (socket) => {
     </Provider>
   );
 };
-
-init();
-
-export default init;

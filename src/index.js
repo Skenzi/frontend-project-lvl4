@@ -7,9 +7,9 @@ import '../assets/application.scss';
 import 'bootstrap';
 import init from './init.jsx';
 
-const rendering = () => {
+const rendering = async () => {
   const socket = io();
-  render(init(socket), document.querySelector('#chat'));
+  render(await init(socket), document.querySelector('#chat'));
 };
 
 rendering();

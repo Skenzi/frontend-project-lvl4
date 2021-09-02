@@ -18,7 +18,7 @@ const AddModal = ({ onHide, socket, modalInfo }) => {
     inputRef.current.focus();
   });
   return (
-    <Modal show={modalInfo.show} onHide={onHide}>
+    <Modal show={modalInfo.show} onHide={onHide} centered>
       <Modal.Header closeButton>
         <Modal.Title>{i18n.t('modal.addChannel')}</Modal.Title>
       </Modal.Header>
@@ -51,12 +51,18 @@ const AddModal = ({ onHide, socket, modalInfo }) => {
                   data-testid="add-channel"
                   name="body"
                   ref={inputRef}
+                  className="mb-2"
                 />
               </FormGroup>
               {errors.body && touched.body ? (<p className="text-danger">{i18n.t('errors.channelExist')}</p>) : null}
-              <button type="submit" className="btn btn-primary" value="submit">
-                {i18n.t('send')}
-              </button>
+              <div className="d-flex justify-content-end">
+                <button type="button" className="btn btn-secondary me-2" onClick={onHide}>
+                  {i18n.t('cancel')}
+                </button>
+                <button type="submit" className="btn btn-primary" value="submit">
+                  {i18n.t('send')}
+                </button>
+              </div>
             </Form>
           )}
         </Formik>

@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import * as yup from 'yup';
 import { Formik } from 'formik';
 import {
-  Modal, FormGroup, FormControl, Form,
+  Modal, FormControl, Form,
 } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 
@@ -18,7 +18,7 @@ const RenameModal = ({ onHide, modalInfo, socket }) => {
     inputRef.current.select();
   });
   return (
-    <Modal show={modalInfo.show} onHide={onHide}>
+    <Modal show={modalInfo.show} onHide={onHide} centered>
       <Modal.Header closeButton onHide={onHide}>
         <Modal.Title>{i18n.t('modal.renameChannel')}</Modal.Title>
       </Modal.Header>
@@ -37,26 +37,30 @@ const RenameModal = ({ onHide, modalInfo, socket }) => {
         >
           {({
             values,
-            errors,
-            touched,
+            isValid,
             handleBlur,
             handleChange,
             handleSubmit,
           }) => (
             <Form onSubmit={handleSubmit}>
-              <FormGroup>
-                <FormControl
-                  required
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  value={values.body}
-                  data-testid="rename-channel"
-                  name="body"
-                  ref={inputRef}
-                />
-              </FormGroup>
-              {errors.body && touched.body ? (<p className="text-danger">{i18n.t('errors.channelExist')}</p>) : null}
-              <button type="submit" role="button" className="btn btn-primary">{i18n.t('send')}</button>
+              <FormControl
+                required
+                onChange={handleChange}
+                onBlur={handleBlur}
+                value={values.body}
+                isInvalid={!isValid}
+                data-testid="rename-channel"
+                className="mb-2"
+                name="body"
+                ref={inputRef}
+              />
+              <Form.Control.Feedback type="invalid">{i18n.t('errors.channelExist')}</Form.Control.Feedback>
+              <div className="d-flex justify-content-end">
+                <button type="button" className="btn btn-secondary me-2" onClick={onHide}>
+                  {i18n.t('cancel')}
+                </button>
+                <button type="submit" role="button" className="btn btn-primary">{i18n.t('send')}</button>
+              </div>
             </Form>
           )}
         </Formik>

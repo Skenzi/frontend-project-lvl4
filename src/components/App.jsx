@@ -1,5 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { useDispatch } from 'react-redux';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   BrowserRouter as Router,
@@ -17,10 +16,6 @@ import NotFoundPage from './NotFoundPage.jsx';
 import SignUpPage from './SignUp.jsx';
 import authContext from '../context/index.js';
 import useAuth from '../hooks/index.js';
-import {
-  addChannel, renameChannel, removeChannel,
-} from '../features/channelsSlice';
-import { addNewMessage } from '../features/messagesSlice.js';
 
 const checkToken = () => {
   const userId = JSON.parse(localStorage.getItem('userId'));
@@ -74,62 +69,33 @@ const AuthButton = () => {
   ) : null;
 };
 
-const SignUpButton = () => {
-  const auth = useAuth();
-  const i18n = useTranslation();
-  return auth.signUp && !auth.loggedIn ? (
-    <Button as={Link} to="/signup">
-      {i18n.t('signup.register')}
-    </Button>
-  ) : null;
-};
+const App = ({ socket }) => (
+  <AuthProvider>
+    <div className="d-flex flex-column h-100">
+      <Router>
+        <Navbar bg="white" variant="light" expand="lg" className="shadow-sm">
+          <Container>
+            <Navbar.Brand as={Link} to="/">Hexlet Chat</Navbar.Brand>
+            <AuthButton />
+          </Container>
+        </Navbar>
 
-const App = ({ socket }) => {
-  const dispatch = useDispatch();
-  const socketRef = useRef(socket);
-  useEffect(() => {
-    socketRef.current.on('newChannel', (newChannel) => {
-      dispatch(addChannel(newChannel));
-    });
-    socketRef.current.on('removeChannel', (removedChannel) => {
-      dispatch(removeChannel(removedChannel));
-    });
-    socketRef.current.on('renameChannel', (renamingChannel) => {
-      dispatch(renameChannel(renamingChannel));
-    });
-    socketRef.current.on('newMessage', (newMessage) => {
-      dispatch(addNewMessage(newMessage));
-    });
-  }, [socketRef]);
-  return (
-    <AuthProvider>
-      <div className="d-flex flex-column h-100">
-        <Router>
-          <Navbar bg="light" variant="light" expand="lg">
-            <Container>
-              <Navbar.Brand as={Link} to="/">Hexlet Chat</Navbar.Brand>
-              <AuthButton />
-              <SignUpButton />
-            </Container>
-          </Navbar>
-
-          <Switch>
-            <Route path="/login">
-              <LoginPage />
-            </Route>
-            <Route path="/signup">
-              <SignUpPage />
-            </Route>
-            <ChatRoute path="/">
-              <ChatPage socket={socket} />
-            </ChatRoute>
-            <Route path="*">
-              <NotFoundPage />
-            </Route>
-          </Switch>
-        </Router>
-      </div>
-    </AuthProvider>
-  );
-};
+        <Switch>
+          <Route path="/login">
+            <LoginPage />
+          </Route>
+          <Route path="/signup">
+            <SignUpPage />
+          </Route>
+          <ChatRoute path="/">
+            <ChatPage socket={socket} />
+          </ChatRoute>
+          <Route path="*">
+            <NotFoundPage />
+          </Route>
+        </Switch>
+      </Router>
+    </div>
+  </AuthProvider>
+);
 export default App;

@@ -9,17 +9,20 @@ const RemoveModal = ({ onHide, modalInfo, socket }) => {
     onHide();
   };
   return (
-    <Modal show={modalInfo.show} onHide={onHide}>
+    <Modal show={modalInfo.show} onHide={onHide} centered>
       <Modal.Header closeButton onHide={onHide}>
         <Modal.Title>{i18n.t('modal.removeChannel')}</Modal.Title>
       </Modal.Header>
 
       <Modal.Body>
-        {i18n.t('youSure')}
+        <p className="lead">{i18n.t('youSure')}</p>
+        <div className="d-flex justify-content-end">
+          <button type="button" className="btn btn-secondary me-2" onClick={onHide}>
+            {i18n.t('cancel')}
+          </button>
+          <button type="button" role="button" className="btn btn-danger" onClick={handleRemove}>{i18n.t('remove')}</button>
+        </div>
       </Modal.Body>
-      <Modal.Footer>
-        <button type="button" role="button" className="btn btn-danger" onClick={handleRemove}>{i18n.t('remove')}</button>
-      </Modal.Footer>
     </Modal>
   );
 };
