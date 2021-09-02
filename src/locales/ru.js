@@ -25,6 +25,7 @@ const ru = {
     },
     errors: {
       userExist: 'Пользователь уже существует',
+      required: 'Обязательное поле',
       fillError: 'Неверные имя пользователя или пароль',
       confirmPasswords: 'Пароли должны совпадать',
       usernameCountSymbols: 'От 3 до 20 символов',
@@ -32,7 +33,6 @@ const ru = {
       channelExist: 'Должно быть уникальным',
     },
     channels: 'Каналы',
-    sendMessage: 'Послать сообщение',
     messages: {
       message_0: '{{count}} сообщениe',
       message_1: '{{count}} сообщения',

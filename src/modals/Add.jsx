@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Formik } from 'formik';
 import {
-  Form, Modal, FormGroup, FormControl,
+  Form, Modal, FormControl,
 } from 'react-bootstrap';
 import * as yup from 'yup';
 import { useSelector } from 'react-redux';
@@ -12,7 +12,7 @@ const AddModal = ({ onHide, socket, modalInfo }) => {
   const i18n = useTranslation();
   const { channels } = useSelector((state) => state.channelsData);
   const validationSchema = yup.object().shape({
-    body: yup.string().notOneOf(channels.map((channel) => channel.name)),
+    body: yup.string().notOneOf(channels.map((channel) => channel.name)).trim().required(),
   });
   useEffect(() => {
     inputRef.current.focus();
@@ -29,32 +29,34 @@ const AddModal = ({ onHide, socket, modalInfo }) => {
             body: '',
           }}
           validationSchema={validationSchema}
-          onSubmit={(values) => {
-            socket.emit('newChannel', { name: values.body });
-            onHide();
+          onSubmit={async (values) => {
+            try {
+              await socket.emit('newChannel', { name: values.body });
+              onHide();
+            } catch (e) {
+              console.log(e);
+            }
           }}
         >
           {({
             values,
-            errors,
-            touched,
+            isValid,
             handleBlur,
             handleChange,
             handleSubmit,
           }) => (
             <Form onSubmit={handleSubmit}>
-              <FormGroup>
-                <FormControl
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  value={values.body}
-                  data-testid="add-channel"
-                  name="body"
-                  ref={inputRef}
-                  className="mb-2"
-                />
-              </FormGroup>
-              {errors.body && touched.body ? (<p className="text-danger">{i18n.t('errors.channelExist')}</p>) : null}
+              <FormControl
+                onChange={handleChange}
+                onBlur={handleBlur}
+                value={values.body}
+                isInvalid={!isValid}
+                data-testid="add-channel"
+                name="body"
+                ref={inputRef}
+                className="mb-2"
+              />
+              <Form.Control.Feedback type="invalid">{values.body.trim() !== '' ? i18n.t('errors.channelExist') : i18n.t('errors.required') }</Form.Control.Feedback>
               <div className="d-flex justify-content-end">
                 <button type="button" className="btn btn-secondary me-2" onClick={onHide}>
                   {i18n.t('cancel')}

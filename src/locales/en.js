@@ -32,7 +32,6 @@ const en = {
       channelExist: 'Must be unique',
     },
     channels: 'Channels',
-    sendMessage: 'Send message',
     messages: {
       message: '{{count}} message',
       message_plural: '{{count}} messages',

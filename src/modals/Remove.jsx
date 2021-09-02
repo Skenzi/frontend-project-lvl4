@@ -4,9 +4,13 @@ import { Modal } from 'react-bootstrap';
 
 const RemoveModal = ({ onHide, modalInfo, socket }) => {
   const i18n = useTranslation();
-  const handleRemove = () => {
-    socket.emit('removeChannel', modalInfo.item);
-    onHide();
+  const handleRemove = async () => {
+    try {
+      socket.emit('removeChannel', modalInfo.item);
+      onHide();
+    } catch (e) {
+      console.log(e);
+    }
   };
   return (
     <Modal show={modalInfo.show} onHide={onHide} centered>

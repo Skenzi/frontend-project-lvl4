@@ -11,7 +11,7 @@ const RenameModal = ({ onHide, modalInfo, socket }) => {
   const i18n = useTranslation();
   const { channels } = useSelector((state) => state.channelsData);
   const validationSchema = yup.object().shape({
-    body: yup.string().notOneOf(channels.map((channel) => channel.name)),
+    body: yup.string().notOneOf(channels.map((channel) => channel.name)).trim().required(),
   });
   const inputRef = useRef();
   useEffect(() => {
@@ -29,10 +29,14 @@ const RenameModal = ({ onHide, modalInfo, socket }) => {
             body: modalInfo.item.name,
           }}
           validationSchema={validationSchema}
-          onSubmit={(values) => {
-            const renamingChannel = { ...modalInfo.item, name: values.body };
-            socket.emit('renameChannel', renamingChannel);
-            onHide();
+          onSubmit={async (values) => {
+            try {
+              const renamingChannel = { ...modalInfo.item, name: values.body };
+              await socket.emit('renameChannel', renamingChannel);
+              onHide();
+            } catch (e) {
+              console.log(e);
+            }
           }}
         >
           {({
@@ -44,7 +48,6 @@ const RenameModal = ({ onHide, modalInfo, socket }) => {
           }) => (
             <Form onSubmit={handleSubmit}>
               <FormControl
-                required
                 onChange={handleChange}
                 onBlur={handleBlur}
                 value={values.body}
@@ -54,7 +57,7 @@ const RenameModal = ({ onHide, modalInfo, socket }) => {
                 name="body"
                 ref={inputRef}
               />
-              <Form.Control.Feedback type="invalid">{i18n.t('errors.channelExist')}</Form.Control.Feedback>
+              <Form.Control.Feedback type="invalid">{values.body.trim() !== '' ? i18n.t('errors.channelExist') : i18n.t('errors.required') }</Form.Control.Feedback>
               <div className="d-flex justify-content-end">
                 <button type="button" className="btn btn-secondary me-2" onClick={onHide}>
                   {i18n.t('cancel')}
