@@ -20,7 +20,7 @@ const RemoveModal = ({ onHide, modalInfo, socket }) => {
           <button type="button" className="btn btn-secondary me-2" onClick={onHide}>
             {i18n.t('cancel')}
           </button>
-          <button type="button" role="button" className="btn btn-danger" onClick={handleRemove}>{i18n.t('remove')}</button>
+          <button type="button" className="btn btn-danger" onClick={handleRemove}>{i18n.t('remove')}</button>
         </div>
       </Modal.Body>
     </Modal>

@@ -32,6 +32,7 @@ const ru = {
       channelExist: 'Должно быть уникальным',
     },
     channels: 'Каналы',
+    sendMessage: 'Отправить сообщение',
     messages: {
       message_0: '{{count}} сообщениe',
       message_1: '{{count}} сообщения',
