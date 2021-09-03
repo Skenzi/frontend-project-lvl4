@@ -16,9 +16,8 @@ export default async (socket) => {
     localStorage.debug = 'chat:*';
   }
   const instance = i18n.createInstance();
-  socket.on('newChannel', (newChannel, ack) => {
+  socket.on('newChannel', (newChannel) => {
     store.dispatch(addChannel(newChannel));
-    console.log(ack);
   });
   socket.on('removeChannel', (removedChannel) => {
     store.dispatch(removeChannel(removedChannel));
@@ -26,9 +25,8 @@ export default async (socket) => {
   socket.on('renameChannel', (renamingChannel) => {
     store.dispatch(renameChannel(renamingChannel));
   });
-  socket.on('newMessage', (newMessage, ack) => {
+  socket.on('newMessage', (newMessage) => {
     store.dispatch(addNewMessage(newMessage));
-    console.log(ack);
   });
 
   instance
