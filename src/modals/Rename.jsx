@@ -42,14 +42,12 @@ const RenameModal = ({ onHide, modalInfo, socket }) => {
           {({
             values,
             isValid,
-            handleBlur,
             handleChange,
             handleSubmit,
           }) => (
             <Form onSubmit={handleSubmit}>
               <FormControl
                 onChange={handleChange}
-                onBlur={handleBlur}
                 value={values.body}
                 isInvalid={!isValid}
                 data-testid="rename-channel"

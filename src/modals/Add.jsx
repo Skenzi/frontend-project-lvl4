@@ -41,14 +41,12 @@ const AddModal = ({ onHide, socket, modalInfo }) => {
           {({
             values,
             isValid,
-            handleBlur,
             handleChange,
             handleSubmit,
           }) => (
             <Form onSubmit={handleSubmit}>
               <FormControl
                 onChange={handleChange}
-                onBlur={handleBlur}
                 value={values.body}
                 isInvalid={!isValid}
                 data-testid="add-channel"
