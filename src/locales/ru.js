@@ -6,7 +6,6 @@ const ru = {
     remove: 'Удалить',
     rename: 'Переименовать',
     password: 'Пароль',
-    required: 'Обязательно заполнить!',
     send: 'Отправить',
     cancel: 'Отменить',
     login: {

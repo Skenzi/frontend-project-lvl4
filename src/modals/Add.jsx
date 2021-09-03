@@ -31,7 +31,7 @@ const AddModal = ({ onHide, socket, modalInfo }) => {
           validationSchema={validationSchema}
           onSubmit={async (values) => {
             try {
-              await socket.emit('newChannel', { name: values.body });
+              socket.emit('newChannel', { name: values.body });
               onHide();
             } catch (e) {
               console.log(e);

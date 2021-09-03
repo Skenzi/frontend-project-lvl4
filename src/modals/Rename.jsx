@@ -32,7 +32,7 @@ const RenameModal = ({ onHide, modalInfo, socket }) => {
           onSubmit={async (values) => {
             try {
               const renamingChannel = { ...modalInfo.item, name: values.body };
-              await socket.emit('renameChannel', renamingChannel);
+              socket.emit('renameChannel', renamingChannel);
               onHide();
             } catch (e) {
               console.log(e);

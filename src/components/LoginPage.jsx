@@ -77,8 +77,7 @@ const LoginPage = () => {
                   </div>
                   <Form onSubmit={handleSubmit} className="col-12 col-md-6 mt-3 mt-mb-0">
                     <h1 className="text-center mb-4">{i18n.t('login.logIn')}</h1>
-                    <Form.Group className="mb-3">
-                      <Form.Label htmlFor="username">{i18n.t('nickname')}</Form.Label>
+                    <Form.Group className="mb-3 form-floating">
                       <Form.Control
                         type="text"
                         name="username"
@@ -90,10 +89,10 @@ const LoginPage = () => {
                         disabled={isSubmitting}
                         value={values.username}
                       />
+                      <Form.Label htmlFor="username">{i18n.t('nickname')}</Form.Label>
                       {errors.username && touched.username ? (<p className="text-danger">{errors.username}</p>) : null}
                     </Form.Group>
-                    <Form.Group className="mb-3">
-                      <Form.Label htmlFor="password">{i18n.t('password')}</Form.Label>
+                    <Form.Group className="mb-3 form-floating">
                       <Form.Control
                         type="password"
                         name="password"
@@ -105,6 +104,7 @@ const LoginPage = () => {
                         disabled={isSubmitting}
                         value={values.password}
                       />
+                      <Form.Label htmlFor="password">{i18n.t('password')}</Form.Label>
                       {errors.password && touched.password ? (<p className="text-danger">{errors.password}</p>) : null}
                       {loginFailed ? (<Form.Control.Feedback type="invalid">{i18n.t('errors.fillError')}</Form.Control.Feedback>) : null}
                     </Form.Group>

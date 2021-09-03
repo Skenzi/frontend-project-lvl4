@@ -51,7 +51,7 @@ const MessagesForm = ({ socket }) => {
         onSubmit={async ({ message }, actions) => {
           try {
             const currentMessage = { username, text: message, channelId: currentChannelId };
-            await socket.emit('newMessage', currentMessage);
+            socket.emit('newMessage', currentMessage);
             actions.resetForm();
           } catch (e) {
             console.log(e);
@@ -69,7 +69,6 @@ const MessagesForm = ({ socket }) => {
                 type="text"
                 name="message"
                 data-testid="new-message"
-                id="message"
                 placeholder={i18n.t('inputMessagePlaceholder')}
                 className="border-0 p-0 ps-2"
                 onChange={handleChange}
