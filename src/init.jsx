@@ -29,6 +29,10 @@ export default async (socket) => {
     store.dispatch(addNewMessage(newMessage));
   });
 
+  const promiseSocket = (type, data) => new Promise((resolve, reject) => {
+    socket.emit(type, data, (response) => (response.status === 'ok' ? resolve() : reject(response.error)));
+  });
+
   instance
     .use(initReactI18next)
     .init({
@@ -47,7 +51,7 @@ export default async (socket) => {
   });
   return (
     <Provider store={store}>
-      <App socket={socket} />
+      <App promiseSocket={promiseSocket} />
     </Provider>
   );
 };

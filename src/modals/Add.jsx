@@ -7,7 +7,7 @@ import {
 import * as yup from 'yup';
 import { useSelector } from 'react-redux';
 
-const AddModal = ({ onHide, socket, modalInfo }) => {
+const AddModal = ({ onHide, promiseSocket, modalInfo }) => {
   const inputRef = useRef();
   const i18n = useTranslation();
   const { channels } = useSelector((state) => state.channelsData);
@@ -29,13 +29,10 @@ const AddModal = ({ onHide, socket, modalInfo }) => {
             body: '',
           }}
           validationSchema={validationSchema}
-          onSubmit={async (values) => {
-            try {
-              socket.emit('newChannel', { name: values.body });
-              onHide();
-            } catch (e) {
-              console.log(e);
-            }
+          onSubmit={(values) => {
+            promiseSocket('newChannel', { name: values.body })
+              .catch((e) => console.log(e, 1));
+            onHide();
           }}
         >
           {({

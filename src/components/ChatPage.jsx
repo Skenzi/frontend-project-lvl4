@@ -7,7 +7,7 @@ import {
   fetchContent,
 } from '../features/channelsSlice';
 
-const ChatPage = ({ socket }) => {
+const ChatPage = ({ promiseSocket }) => {
   const [modalInfo, setModalInfo] = useState({ type: null, item: null, show: false });
   const showModal = (type, item = null) => setModalInfo({ type, item, show: true });
   const hideModal = () => setModalInfo({ type: null, item: null, show: false });
@@ -22,10 +22,10 @@ const ChatPage = ({ socket }) => {
           <ChannelsContainer showModal={showModal} />
         </div>
         <div className="col p-0 h-100">
-          <MessagesContainer socket={socket} />
+          <MessagesContainer promiseSocket={promiseSocket} />
         </div>
       </div>
-      <MyModal socket={socket} onHide={hideModal} modalInfo={modalInfo} />
+      <MyModal promiseSocket={promiseSocket} onHide={hideModal} modalInfo={modalInfo} />
     </div>
   );
 };

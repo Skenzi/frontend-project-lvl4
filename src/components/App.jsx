@@ -69,7 +69,7 @@ const AuthButton = () => {
   ) : null;
 };
 
-const App = ({ socket }) => (
+const App = ({ promiseSocket }) => (
   <AuthProvider>
     <div className="d-flex flex-column h-100">
       <Router>
@@ -88,7 +88,7 @@ const App = ({ socket }) => (
             <SignUpPage />
           </Route>
           <ChatRoute path="/">
-            <ChatPage socket={socket} />
+            <ChatPage promiseSocket={promiseSocket} />
           </ChatRoute>
           <Route path="*">
             <NotFoundPage />

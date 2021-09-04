@@ -7,7 +7,7 @@ import {
 } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 
-const RenameModal = ({ onHide, modalInfo, socket }) => {
+const RenameModal = ({ onHide, modalInfo, promiseSocket }) => {
   const i18n = useTranslation();
   const { channels } = useSelector((state) => state.channelsData);
   const validationSchema = yup.object().shape({
@@ -29,14 +29,10 @@ const RenameModal = ({ onHide, modalInfo, socket }) => {
             body: modalInfo.item.name,
           }}
           validationSchema={validationSchema}
-          onSubmit={async (values) => {
-            try {
-              const renamingChannel = { ...modalInfo.item, name: values.body };
-              socket.emit('renameChannel', renamingChannel);
-              onHide();
-            } catch (e) {
-              console.log(e);
-            }
+          onSubmit={(values) => {
+            const renamingChannel = { ...modalInfo.item, name: values.body };
+            promiseSocket('renameChannel', renamingChannel).catch((e) => console.log(e));
+            onHide();
           }}
         >
           {({

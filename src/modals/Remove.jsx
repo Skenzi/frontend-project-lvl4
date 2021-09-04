@@ -2,15 +2,11 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Modal } from 'react-bootstrap';
 
-const RemoveModal = ({ onHide, modalInfo, socket }) => {
+const RemoveModal = ({ onHide, modalInfo, promiseSocket }) => {
   const i18n = useTranslation();
-  const handleRemove = async () => {
-    try {
-      socket.emit('removeChannel', modalInfo.item);
-      onHide();
-    } catch (e) {
-      console.log(e);
-    }
+  const handleRemove = () => {
+    promiseSocket('removeChannel', modalInfo.item).catch((e) => console.log(e));
+    onHide();
   };
   return (
     <Modal show={modalInfo.show} onHide={onHide} centered>
