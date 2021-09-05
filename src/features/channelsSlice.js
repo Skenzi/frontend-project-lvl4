@@ -1,3 +1,5 @@
+/* eslint no-param-reassign:
+["error", { "props": true, "ignorePropertyModificationsFor": ["state"] }] */
 import { createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 import routes from '../routes.js';
@@ -10,13 +12,6 @@ const getAuthHeader = () => {
   }
 
   return {};
-};
-
-export const fetchContent = () => async (dispatch) => {
-  const response = await axios.get(routes.dataPath(), {
-    headers: getAuthHeader(),
-  });
-  dispatch(setInitialState(response.data));
 };
 
 export const channelsSlice = createSlice({
@@ -53,4 +48,12 @@ export const channelsSlice = createSlice({
 export const {
   setInitialState, addChannel, removeChannel, renameChannel, swapCurrentChannelId,
 } = channelsSlice.actions;
+
+export const fetchContent = () => async (dispatch) => {
+  const response = await axios.get(routes.dataPath(), {
+    headers: getAuthHeader(),
+  });
+  dispatch(setInitialState(response.data));
+};
+
 export default channelsSlice.reducer;

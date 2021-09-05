@@ -87,10 +87,12 @@ const MessagesForm = () => {
   );
 };
 
-export default ({ promiseSocket }) => (
+const MessagesContainer = ({ promiseSocket }) => (
   <div className="d-flex flex-column h-100">
     <MessagesHeader />
     <MessagesBox />
     <MessagesForm promiseSocket={promiseSocket} />
   </div>
 );
+
+export default MessagesContainer;

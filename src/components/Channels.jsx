@@ -56,7 +56,7 @@ const ChannelsList = ({ showModal }) => {
   );
 };
 
-export default ({ showModal }) => {
+const ChannelsContainer = ({ showModal }) => {
   const i18n = useTranslation();
   return (
     <>
@@ -74,3 +74,5 @@ export default ({ showModal }) => {
     </>
   );
 };
+
+export default ChannelsContainer;
