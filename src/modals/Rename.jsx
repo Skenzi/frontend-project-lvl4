@@ -6,8 +6,10 @@ import {
   Modal, FormControl, Form,
 } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
+import useSocket from '../hooks/index.js';
 
-const RenameModal = ({ onHide, modalInfo, promiseSocket }) => {
+const RenameModal = ({ onHide, modalInfo }) => {
+  const contextSocket = useSocket();
   const i18n = useTranslation();
   const { channels } = useSelector((state) => state.channelsData);
   const validationSchema = yup.object().shape({
@@ -31,7 +33,7 @@ const RenameModal = ({ onHide, modalInfo, promiseSocket }) => {
           validationSchema={validationSchema}
           onSubmit={(values) => {
             const renamingChannel = { ...modalInfo.item, name: values.body };
-            promiseSocket('renameChannel', renamingChannel).catch((e) => console.log(e));
+            contextSocket.promiseSocket('renameChannel', renamingChannel).catch((e) => console.log(e));
             onHide();
           }}
         >

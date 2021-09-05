@@ -34,7 +34,7 @@ const ChatRoute = ({ children, path }) => {
   );
 };
 
-const AuthProvider = ({ children }) => {
+const AuthProvider = ({ children, promiseSocket }) => {
   const [loggedIn, setLoggedIn] = useState(checkToken());
   const [signUp, setSignUp] = useState(true);
   const signUpOpen = () => setSignUp(true);
@@ -47,7 +47,7 @@ const AuthProvider = ({ children }) => {
 
   return (
     <authContext.Provider value={{
-      loggedIn, logIn, logOut, signUpOpen, signUpClose, signUp,
+      loggedIn, logIn, logOut, signUpOpen, signUpClose, signUp, promiseSocket,
     }}
     >
       {children}
@@ -70,7 +70,7 @@ const AuthButton = () => {
 };
 
 const App = ({ promiseSocket }) => (
-  <AuthProvider>
+  <AuthProvider promiseSocket={promiseSocket}>
     <div className="d-flex flex-column h-100">
       <Router>
         <Navbar bg="white" variant="light" expand="lg" className="shadow-sm">

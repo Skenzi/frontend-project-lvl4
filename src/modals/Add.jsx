@@ -6,8 +6,10 @@ import {
 } from 'react-bootstrap';
 import * as yup from 'yup';
 import { useSelector } from 'react-redux';
+import useSocket from '../hooks/index.js';
 
-const AddModal = ({ onHide, promiseSocket, modalInfo }) => {
+const AddModal = ({ onHide, modalInfo }) => {
+  const contextSocket = useSocket();
   const inputRef = useRef();
   const i18n = useTranslation();
   const { channels } = useSelector((state) => state.channelsData);
@@ -30,7 +32,7 @@ const AddModal = ({ onHide, promiseSocket, modalInfo }) => {
           }}
           validationSchema={validationSchema}
           onSubmit={(values) => {
-            promiseSocket('newChannel', { name: values.body })
+            contextSocket.promiseSocket('newChannel', { name: values.body })
               .catch((e) => console.log(e, 1));
             onHide();
           }}
@@ -38,6 +40,7 @@ const AddModal = ({ onHide, promiseSocket, modalInfo }) => {
           {({
             values,
             isValid,
+            isSubmitting,
             handleChange,
             handleSubmit,
           }) => (
@@ -53,10 +56,10 @@ const AddModal = ({ onHide, promiseSocket, modalInfo }) => {
               />
               <Form.Control.Feedback type="invalid">{values.body.trim() !== '' ? i18n.t('errors.channelExist') : i18n.t('errors.required') }</Form.Control.Feedback>
               <div className="d-flex justify-content-end">
-                <button type="button" className="btn btn-secondary me-2" onClick={onHide}>
+                <button type="button" disabled={isSubmitting} className="btn btn-secondary me-2" onClick={onHide}>
                   {i18n.t('cancel')}
                 </button>
-                <button type="submit" key="modalSubmit" className="btn btn-primary">
+                <button type="submit" disabled={isSubmitting} className="btn btn-primary">
                   {i18n.t('send')}
                 </button>
               </div>

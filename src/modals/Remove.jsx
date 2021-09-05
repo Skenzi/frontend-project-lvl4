@@ -1,11 +1,13 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Modal } from 'react-bootstrap';
+import useSocket from '../hooks/index.js';
 
-const RemoveModal = ({ onHide, modalInfo, promiseSocket }) => {
+const RemoveModal = ({ onHide, modalInfo }) => {
+  const contextSocket = useSocket();
   const i18n = useTranslation();
   const handleRemove = () => {
-    promiseSocket('removeChannel', modalInfo.item).catch((e) => console.log(e));
+    contextSocket.promiseSocket('removeChannel', modalInfo.item).catch((e) => console.log(e));
     onHide();
   };
   return (
