@@ -10,16 +10,12 @@ import {
 import {
   Button, Navbar, Container,
 } from 'react-bootstrap';
-import { useDispatch } from 'react-redux';
 import LoginPage from './LoginPage.jsx';
 import ChatPage from './ChatPage.jsx';
 import NotFoundPage from './NotFoundPage.jsx';
 import SignUpPage from './SignUp.jsx';
 import authContext from '../context/index.js';
 import useAuth from '../hooks/index.js';
-import {
-  fetchContent,
-} from '../features/channelsSlice';
 
 const checkToken = () => {
   const userId = JSON.parse(localStorage.getItem('userId'));
@@ -73,37 +69,33 @@ const AuthButton = () => {
   ) : null;
 };
 
-const App = ({ promiseSocket }) => {
-  const dispatch = useDispatch();
-  dispatch(fetchContent());
-  return (
-    <AuthProvider promiseSocket={promiseSocket}>
-      <div className="d-flex flex-column h-100">
-        <Router>
-          <Navbar bg="white" variant="light" expand="lg" className="shadow-sm">
-            <Container>
-              <Navbar.Brand as={Link} to="/">Hexlet Chat</Navbar.Brand>
-              <AuthButton />
-            </Container>
-          </Navbar>
+const App = ({ promiseSocket }) => (
+  <AuthProvider promiseSocket={promiseSocket}>
+    <div className="d-flex flex-column h-100">
+      <Router>
+        <Navbar bg="white" variant="light" expand="lg" className="shadow-sm">
+          <Container>
+            <Navbar.Brand as={Link} to="/">Hexlet Chat</Navbar.Brand>
+            <AuthButton />
+          </Container>
+        </Navbar>
 
-          <Switch>
-            <Route path="/login">
-              <LoginPage />
-            </Route>
-            <Route path="/signup">
-              <SignUpPage />
-            </Route>
-            <ChatRoute path="/">
-              <ChatPage promiseSocket={promiseSocket} />
-            </ChatRoute>
-            <Route path="*">
-              <NotFoundPage />
-            </Route>
-          </Switch>
-        </Router>
-      </div>
-    </AuthProvider>
-  );
-};
+        <Switch>
+          <Route path="/login">
+            <LoginPage />
+          </Route>
+          <Route path="/signup">
+            <SignUpPage />
+          </Route>
+          <ChatRoute path="/">
+            <ChatPage promiseSocket={promiseSocket} />
+          </ChatRoute>
+          <Route path="*">
+            <NotFoundPage />
+          </Route>
+        </Switch>
+      </Router>
+    </div>
+  </AuthProvider>
+);
 export default App;
