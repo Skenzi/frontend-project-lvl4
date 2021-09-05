@@ -7,7 +7,7 @@ import App from './components/App.jsx';
 import store from './store.js';
 import resources from './locales/index.js';
 import {
-  addChannel, renameChannel, removeChannel,
+  addChannel, renameChannel, removeChannel, fetchContent,
 } from './features/channelsSlice';
 import { addNewMessage } from './features/messagesSlice.js';
 
@@ -15,6 +15,7 @@ export default async (socket) => {
   if (process.env.NODE_ENV !== 'production') {
     localStorage.debug = 'chat:*';
   }
+  store.dispatch(fetchContent());
   const instance = i18n.createInstance();
   socket.on('newChannel', (newChannel) => {
     store.dispatch(addChannel(newChannel));
