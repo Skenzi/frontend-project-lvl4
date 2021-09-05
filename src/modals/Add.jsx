@@ -56,7 +56,7 @@ const AddModal = ({ onHide, promiseSocket, modalInfo }) => {
                 <button type="button" className="btn btn-secondary me-2" onClick={onHide}>
                   {i18n.t('cancel')}
                 </button>
-                <button type="submit" className="btn btn-primary">
+                <button type="submit" key="modalSubmit" className="btn btn-primary">
                   {i18n.t('send')}
                 </button>
               </div>
