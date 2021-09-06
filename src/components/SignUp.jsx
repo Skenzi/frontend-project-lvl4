@@ -55,7 +55,6 @@ const SignUpPage = () => {
         values,
         errors,
         touched,
-        isValid,
         handleChange,
         handleSubmit,
         isSubmitting,
@@ -83,12 +82,12 @@ const SignUpPage = () => {
                         autoComplete="username"
                         placeholder={i18n.t('username')}
                         onChange={handleChange}
-                        isInvalid={!isValid}
+                        isInvalid={userExist}
                         disabled={isSubmitting}
                         value={values.username}
                       />
                       <Form.Label htmlFor="username">{i18n.t('username')}</Form.Label>
-                      {errors.username && touched.username ? (<div className="text-danger">{i18n.t('errors.usernameCountSymbols')}</div>) : null}
+                      {errors.username && touched.username ? (<p className="text-danger">{i18n.t('errors.usernameCountSymbols')}</p>) : null}
                     </Form.Group>
                     <Form.Group className="mb-3 form-floating">
                       <Form.Control
@@ -98,12 +97,12 @@ const SignUpPage = () => {
                         autoComplete="new-password"
                         placeholder={i18n.t('password')}
                         onChange={handleChange}
-                        isInvalid={!isValid}
+                        isInvalid={userExist}
                         disabled={isSubmitting}
                         value={values.password}
                       />
                       <Form.Label htmlFor="password">{i18n.t('password')}</Form.Label>
-                      {errors.password && touched.password ? (<div className="text-danger">{i18n.t('errors.passwordCountSymbols')}</div>) : null}
+                      {errors.password && touched.password ? (<p className="text-danger">{i18n.t('errors.passwordCountSymbols')}</p>) : null}
                     </Form.Group>
                     <Form.Group className="mb-4 form-floating">
                       <Form.Control
@@ -113,14 +112,15 @@ const SignUpPage = () => {
                         autoComplete="new-password"
                         placeholder={i18n.t('password')}
                         onChange={handleChange}
-                        isInvalid={!isValid}
+                        isInvalid={userExist}
                         disabled={isSubmitting}
                         value={values.confirmPassword}
                       />
                       <Form.Label htmlFor="confirmPassword">{i18n.t('signup.confirmPassword')}</Form.Label>
                       {(errors.confirmPassword && touched.confirmPassword) ? (<div className="text-danger">{errors.confirmPassword}</div>) : null}
-                      {userExist ? (<Form.Control.Feedback type="invalid">{i18n.t('errors.userExist')}</Form.Control.Feedback>) : null}
+                      {userExist ? (<div className="invalid-tooltip">{i18n.t('errors.userExist')}</div>) : null}
                     </Form.Group>
+                    {userExist ? (<div className="invalid-tooltip">{i18n.t('errors.userExist')}</div>) : null}
                     <Button variant="outline-primary" className="w-100" type="submit" disabled={isSubmitting}>
                       {i18n.t('signup.signUp')}
                     </Button>

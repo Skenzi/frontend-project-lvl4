@@ -54,7 +54,6 @@ export const fetchContent = () => async (dispatch) => {
     const response = await axios.get(routes.dataPath(), {
       headers: getAuthHeader(),
     });
-    console.log(response);
     dispatch(setInitialState(response.data));
   } catch (e) {
     if (e.isAxiosError) {

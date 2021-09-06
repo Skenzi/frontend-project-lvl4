@@ -104,7 +104,7 @@ const LoginPage = () => {
                       />
                       <Form.Label htmlFor="password">{i18n.t('password')}</Form.Label>
                       {errors.password && touched.password ? (<p className="text-danger">{errors.password}</p>) : null}
-                      <Form.Control.Feedback type="invalid">{i18n.t('errors.fillError')}</Form.Control.Feedback>
+                      {loginFailed ? (<div className="invalid-tooltip">{i18n.t('errors.fillError')}</div>) : null}
                     </Form.Group>
 
                     <Button variant="outline-primary" className="w-100" type="submit" disabled={isSubmitting}>
