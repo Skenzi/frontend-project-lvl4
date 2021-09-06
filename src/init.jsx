@@ -7,7 +7,7 @@ import App from './components/App.jsx';
 import store from './store.js';
 import resources from './locales/index.js';
 import {
-  addChannel, renameChannel, removeChannel,
+  addChannel, renameChannel, removeChannel, fetchContent,
 } from './features/channelsSlice';
 import { addNewMessage } from './features/messagesSlice.js';
 
@@ -49,6 +49,7 @@ export default async (socket) => {
       notOneOf: instance.t('errors.userExist'),
     },
   });
+  store.dispatch(fetchContent());
   return (
     <Provider store={store}>
       <App promiseSocket={promiseSocket} />
