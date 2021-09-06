@@ -36,7 +36,6 @@ const SignUpPage = () => {
           localStorage.setItem('userId', JSON.stringify(token));
           localStorage.setItem('username', token.username);
           auth.logIn();
-          auth.signUpClose();
           isUserNotExist();
           setSubmitting(false);
           const { from } = location.state || { from: { pathname: '/' } };
