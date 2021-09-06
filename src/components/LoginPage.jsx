@@ -9,13 +9,12 @@ import useAuth from '../hooks/index.js';
 import routes from '../routes.js';
 
 const SignUpButton = () => {
-  const auth = useAuth();
   const i18n = useTranslation();
-  return auth.signUp && !auth.loggedIn ? (
+  return (
     <Link to="/signup">
       {i18n.t('signup.register')}
     </Link>
-  ) : null;
+  );
 };
 
 const LoginPage = () => {
@@ -40,7 +39,6 @@ const LoginPage = () => {
           localStorage.setItem('userId', JSON.stringify(token));
           localStorage.setItem('username', values.username);
           auth.logIn();
-          auth.signUpClose();
           setSubmitting(false);
           const { from } = location.state || { from: { pathname: '/' } };
           history.replace(from);
@@ -106,7 +104,7 @@ const LoginPage = () => {
                       />
                       <Form.Label htmlFor="password">{i18n.t('password')}</Form.Label>
                       {errors.password && touched.password ? (<p className="text-danger">{errors.password}</p>) : null}
-                      {loginFailed ? (<Form.Control.Feedback type="invalid">{i18n.t('errors.fillError')}</Form.Control.Feedback>) : null}
+                      <Form.Control.Feedback type="invalid">{i18n.t('errors.fillError')}</Form.Control.Feedback>
                     </Form.Group>
 
                     <Button variant="outline-primary" className="w-100" type="submit" disabled={isSubmitting}>

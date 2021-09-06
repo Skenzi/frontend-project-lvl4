@@ -36,9 +36,6 @@ const ChatRoute = ({ children, path }) => {
 
 const AuthProvider = ({ children, promiseSocket }) => {
   const [loggedIn, setLoggedIn] = useState(checkToken());
-  const [signUp, setSignUp] = useState(true);
-  const signUpOpen = () => setSignUp(true);
-  const signUpClose = () => setSignUp(false);
   const logIn = () => setLoggedIn(true);
   const logOut = () => {
     localStorage.removeItem('userId');
@@ -47,7 +44,7 @@ const AuthProvider = ({ children, promiseSocket }) => {
 
   return (
     <authContext.Provider value={{
-      loggedIn, logIn, logOut, signUpOpen, signUpClose, signUp, promiseSocket,
+      loggedIn, logIn, logOut, promiseSocket,
     }}
     >
       {children}
@@ -61,7 +58,6 @@ const AuthButton = () => {
   return auth.loggedIn ? (
     <Button onClick={() => {
       auth.logOut();
-      auth.signUpOpen();
     }}
     >
       {i18n.t('login.logOut')}
