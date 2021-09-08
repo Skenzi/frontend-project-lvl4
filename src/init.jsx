@@ -8,7 +8,7 @@ import App from './components/App.jsx';
 import store from './store.js';
 import resources from './locales/index.js';
 import {
-  addChannel, renameChannel, removeChannel, fetchContent,
+  addChannel, renameChannel, removeChannel,
 } from './features/channelsSlice';
 import { addNewMessage } from './features/messagesSlice.js';
 
@@ -20,17 +20,14 @@ const checkToken = () => {
 export default async (socket) => {
   if (process.env.NODE_ENV !== 'production') {
     localStorage.debug = 'chat:*';
-  }
-  if (checkToken()) {
-    await store.dispatch(fetchContent());
-  }
-  const rollbar = new Rollbar({
-    accessToken: '7c1971e40ca441a8bbfd8beb19527b37',
-    captureUncaught: true,
-    captureUnhandledRejections: true,
-  });
+    const rollbar = new Rollbar({
+      accessToken: '7c1971e40ca441a8bbfd8beb19527b37',
+      captureUncaught: true,
+      captureUnhandledRejections: true,
+    });
 
-  rollbar.log('Hello world!');
+    rollbar.log('Hello world!');
+  }
   const instance = i18n.createInstance();
   socket.on('newChannel', (newChannel) => {
     store.dispatch(addChannel(newChannel));

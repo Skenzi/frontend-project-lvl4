@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useDispatch } from 'react-redux';
 import {
   BrowserRouter as Router,
   Switch,
@@ -16,6 +17,9 @@ import NotFoundPage from './NotFoundPage.jsx';
 import SignUpPage from './SignUp.jsx';
 import authContext from '../context/index.js';
 import useAuth from '../hooks/index.js';
+import {
+  fetchContent,
+} from '../features/channelsSlice';
 
 const ChatRoute = ({ children, path }) => {
   const auth = useAuth();
@@ -36,7 +40,10 @@ const AuthProvider = ({ children, promiseSocket, checkToken }) => {
     localStorage.removeItem('userId');
     setLoggedIn(false);
   };
-  console.log(loggedIn);
+  const dispatch = useDispatch();
+  if (checkToken()) {
+    dispatch(fetchContent());
+  }
 
   return (
     <authContext.Provider value={{

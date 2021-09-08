@@ -25,7 +25,6 @@ const MessagesHeader = () => {
 };
 
 const MessagesBox = () => {
-  console.log(1223);
   const { currentChannelId } = useSelector((state) => state.channelsData);
   const { messages } = useSelector((state) => state.messagesData);
   const currentMessages = messages.filter((message) => message.channelId === currentChannelId);

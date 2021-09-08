@@ -32,12 +32,10 @@ export const channelsSlice = createSlice({
   },
   reducers: {
     setInitialState: (state, { payload }) => {
-      console.log('test', payload.channels);
       state.channels = payload.channels;
       state.currentChannelId = payload.currentChannelId;
     },
     addChannel: (state, { payload }) => {
-      console.log('test');
       state.channels.push(payload);
       state.currentChannelId = payload.id;
     },
@@ -57,7 +55,6 @@ export const channelsSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(fetchContent.fulfilled, (state, { payload }) => {
-      console.log(1111);
       state.channels = payload.channels;
       state.currentChannelId = payload.currentChannelId;
     });
