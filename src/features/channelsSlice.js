@@ -53,11 +53,11 @@ export const channelsSlice = createSlice({
       state.currentChannelId = payload;
     },
   },
-  extraReducers: (builder) => {
-    builder.addCase(fetchContent.fulfilled, (state, { payload }) => {
+  extraReducers: {
+    [fetchContent.fulfilled]: (state, { payload }) => {
       state.channels = payload.channels;
       state.currentChannelId = payload.currentChannelId;
-    });
+    },
   },
 });
 
