@@ -17,6 +17,11 @@ import SignUpPage from './SignUp.jsx';
 import authContext from '../context/index.js';
 import useAuth from '../hooks/index.js';
 
+const checkToken = () => {
+  const userId = JSON.parse(localStorage.getItem('userId'));
+  return !!(userId && userId.token);
+};
+
 const ChatRoute = ({ children, path }) => {
   const auth = useAuth();
 
@@ -29,7 +34,7 @@ const ChatRoute = ({ children, path }) => {
   );
 };
 
-const AuthProvider = ({ children, promiseSocket, checkToken }) => {
+const AuthProvider = ({ children, promiseSocket }) => {
   const [loggedIn, setLoggedIn] = useState(checkToken());
   const logIn = () => setLoggedIn(true);
   const logOut = () => {
@@ -60,8 +65,8 @@ const AuthButton = () => {
   ) : null;
 };
 
-const App = ({ promiseSocket, checkToken }) => (
-  <AuthProvider promiseSocket={promiseSocket} checkToken={checkToken}>
+const App = ({ promiseSocket }) => (
+  <AuthProvider promiseSocket={promiseSocket}>
     <div className="d-flex flex-column h-100">
       <Router>
         <Navbar bg="white" variant="light" expand="lg" className="shadow-sm">

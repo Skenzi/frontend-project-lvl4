@@ -12,11 +12,6 @@ import {
 } from './features/channelsSlice';
 import { addNewMessage } from './features/messagesSlice.js';
 
-const checkToken = () => {
-  const userId = JSON.parse(localStorage.getItem('userId'));
-  return !!(userId && userId.token);
-};
-
 export default async (socket) => {
   if (process.env.NODE_ENV !== 'production') {
     localStorage.debug = 'chat:*';
@@ -62,7 +57,7 @@ export default async (socket) => {
   });
   return (
     <Provider store={store}>
-      <App promiseSocket={promiseSocket} checkToken={checkToken} />
+      <App promiseSocket={promiseSocket} />
     </Provider>
   );
 };
