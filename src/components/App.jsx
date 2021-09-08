@@ -84,7 +84,7 @@ const App = ({ promiseSocket }) => (
             <SignUpPage />
           </Route>
           <ChatRoute path="/">
-            <ChatPage promiseSocket={promiseSocket} />
+            <ChatPage />
           </ChatRoute>
           <Route path="*">
             <NotFoundPage />

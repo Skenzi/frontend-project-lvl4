@@ -33,7 +33,7 @@ const AddModal = ({ onHide, modalInfo }) => {
           validationSchema={validationSchema}
           onSubmit={(values) => {
             contextSocket.promiseSocket('newChannel', { name: values.body })
-              .catch((e) => console.log(e, 1));
+              .catch((e) => console.log(e));
             onHide();
           }}
         >

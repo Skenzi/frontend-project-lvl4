@@ -34,7 +34,6 @@ const SignUpPage = () => {
           const response = await axios.post(routes.signUpPath(), values);
           const token = response.data;
           localStorage.setItem('userId', JSON.stringify(token));
-          localStorage.setItem('username', token.username);
           auth.logIn();
           isUserNotExist();
           setSubmitting(false);

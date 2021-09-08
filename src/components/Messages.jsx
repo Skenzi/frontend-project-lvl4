@@ -45,7 +45,7 @@ const MessagesForm = () => {
   const contextSocket = useSocket();
   const { currentChannelId } = useSelector((state) => state.channelsData);
   const i18n = useTranslation();
-  const username = localStorage.getItem('username');
+  const { username } = JSON.parse(localStorage.getItem('userId'));
   return (
     <div className="mt-auto px-5 py-3">
       <Formik

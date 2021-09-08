@@ -1,7 +1,7 @@
 /* eslint no-param-reassign:
 ["error", { "props": true, "ignorePropertyModificationsFor": ["state"] }] */
 import { createSlice } from '@reduxjs/toolkit';
-import { setInitialState, removeChannel } from './channelsSlice.js';
+import { removeChannel, fetchContent } from './channelsSlice.js';
 
 export const messagesSlice = createSlice({
   name: 'messagesData',
@@ -14,7 +14,7 @@ export const messagesSlice = createSlice({
     },
   },
   extraReducers: {
-    [setInitialState]: (state, { payload }) => {
+    [fetchContent.fulfilled]: (state, { payload }) => {
       state.messages = payload.messages;
     },
     [removeChannel]: (state, { payload }) => {
