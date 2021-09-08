@@ -8,13 +8,21 @@ import App from './components/App.jsx';
 import store from './store.js';
 import resources from './locales/index.js';
 import {
-  addChannel, renameChannel, removeChannel,
+  addChannel, renameChannel, removeChannel, fetchContent,
 } from './features/channelsSlice';
 import { addNewMessage } from './features/messagesSlice.js';
+
+const checkToken = () => {
+  const userId = JSON.parse(localStorage.getItem('userId'));
+  return !!(userId && userId.token);
+};
 
 export default async (socket) => {
   if (process.env.NODE_ENV !== 'production') {
     localStorage.debug = 'chat:*';
+  }
+  if (checkToken()) {
+    await store.dispatch(fetchContent());
   }
   const rollbar = new Rollbar({
     accessToken: '7c1971e40ca441a8bbfd8beb19527b37',
@@ -53,12 +61,11 @@ export default async (socket) => {
   yup.setLocale({
     mixed: {
       required: instance.t('errors.required'),
-      notOneOf: instance.t('errors.userExist'),
     },
   });
   return (
     <Provider store={store}>
-      <App promiseSocket={promiseSocket} />
+      <App promiseSocket={promiseSocket} checkToken={checkToken} />
     </Provider>
   );
 };

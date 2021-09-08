@@ -118,7 +118,6 @@ const SignUpPage = () => {
                       {(errors.confirmPassword && touched.confirmPassword) ? (<div className="text-danger">{errors.confirmPassword}</div>) : null}
                       {userExist ? (<div className="invalid-tooltip">{i18n.t('errors.userExist')}</div>) : null}
                     </Form.Group>
-                    {userExist ? (<div className="invalid-tooltip">{i18n.t('errors.userExist')}</div>) : null}
                     <Button variant="outline-primary" className="w-100" type="submit" disabled={isSubmitting}>
                       {i18n.t('signup.signUp')}
                     </Button>

@@ -1,18 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import React, { useState } from 'react';
 import MyModal from '../modals/index.jsx';
 import ChannelsContainer from './Channels.jsx';
 import MessagesContainer from './Messages.jsx';
-import {
-  fetchContent,
-} from '../features/channelsSlice';
 
 const ChatPage = () => {
-  const dispatch = useDispatch();
-  console.log('ChatPAge');
-  useEffect(() => {
-    dispatch(fetchContent());
-  }, []);
   const [modalInfo, setModalInfo] = useState({ type: null, item: null, show: false });
   const showModal = (type, item = null) => setModalInfo({ type, item, show: true });
   const hideModal = () => setModalInfo({ type: null, item: null, show: false });
