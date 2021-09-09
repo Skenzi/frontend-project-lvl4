@@ -5,8 +5,10 @@ import { Button, Form } from 'react-bootstrap';
 import { useLocation, useHistory, Link } from 'react-router-dom';
 import * as yup from 'yup';
 import axios from 'axios';
+import { useDispatch } from 'react-redux';
 import useAuth from '../hooks/index.js';
 import routes from '../routes.js';
+import { setError } from '../features/errorsSlice.js';
 
 const SignUpButton = () => {
   const i18n = useTranslation();
@@ -19,6 +21,7 @@ const SignUpButton = () => {
 
 const LoginPage = () => {
   const auth = useAuth();
+  const dispatch = useDispatch();
   const i18n = useTranslation();
   const location = useLocation();
   const history = useHistory();
@@ -44,9 +47,9 @@ const LoginPage = () => {
         } catch (e) {
           setLoginFailed(true);
           if (e.isAxiosError) {
-            console.log(e);
+            dispatch(setError(i18n.t('errors.errorAxios')));
           } else {
-            console.log(e);
+            dispatch(setError(e));
           }
         }
       }}
@@ -80,13 +83,13 @@ const LoginPage = () => {
                         name="username"
                         id="username"
                         autoComplete="username"
-                        placeholder={i18n.t('nickname')}
+                        placeholder={i18n.t('yourNick')}
                         onChange={handleChange}
                         isInvalid={loginFailed}
                         disabled={isSubmitting}
                         value={values.username}
                       />
-                      <Form.Label htmlFor="username">{i18n.t('nickname')}</Form.Label>
+                      <Form.Label htmlFor="username">{i18n.t('yourNick')}</Form.Label>
                       {errors.username && touched.username ? (<p className="text-danger">{errors.username}</p>) : null}
                     </Form.Group>
                     <Form.Group className="mb-3 form-floating">

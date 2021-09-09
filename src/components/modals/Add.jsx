@@ -5,10 +5,12 @@ import {
   Form, Modal, FormControl,
 } from 'react-bootstrap';
 import * as yup from 'yup';
-import { useSelector } from 'react-redux';
-import useSocket from '../hooks/index.js';
+import { useSelector, useDispatch } from 'react-redux';
+import useSocket from '../../hooks/index.js';
+import { setError } from '../../features/errorsSlice.js';
 
 const AddModal = ({ onHide, modalInfo }) => {
+  const dispatch = useDispatch();
   const contextSocket = useSocket();
   const inputRef = useRef();
   const i18n = useTranslation();
@@ -33,7 +35,7 @@ const AddModal = ({ onHide, modalInfo }) => {
           validationSchema={validationSchema}
           onSubmit={(values) => {
             contextSocket.promiseSocket('newChannel', { name: values.body })
-              .catch((e) => console.log(e));
+              .catch((e) => dispatch(setError(e)));
             onHide();
           }}
         >

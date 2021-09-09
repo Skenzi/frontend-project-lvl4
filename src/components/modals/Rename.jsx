@@ -5,10 +5,12 @@ import { Formik } from 'formik';
 import {
   Modal, FormControl, Form,
 } from 'react-bootstrap';
-import { useSelector } from 'react-redux';
-import useSocket from '../hooks/index.js';
+import { useSelector, useDispatch } from 'react-redux';
+import useSocket from '../../hooks/index.js';
+import { setError } from '../../features/errorsSlice.js';
 
 const RenameModal = ({ onHide, modalInfo }) => {
+  const dispatch = useDispatch();
   const contextSocket = useSocket();
   const i18n = useTranslation();
   const { channels } = useSelector((state) => state.channelsData);
@@ -33,12 +35,13 @@ const RenameModal = ({ onHide, modalInfo }) => {
           validationSchema={validationSchema}
           onSubmit={(values) => {
             const renamingChannel = { ...modalInfo.item, name: values.body };
-            contextSocket.promiseSocket('renameChannel', renamingChannel).catch((e) => console.log(e));
+            contextSocket.promiseSocket('renameChannel', renamingChannel).catch((e) => dispatch(setError(e)));
             onHide();
           }}
         >
           {({
             values,
+            isSubmitting,
             isValid,
             handleChange,
             handleSubmit,
@@ -55,10 +58,10 @@ const RenameModal = ({ onHide, modalInfo }) => {
               />
               <Form.Control.Feedback type="invalid">{values.body.trim() !== '' ? i18n.t('errors.channelExist') : i18n.t('errors.required') }</Form.Control.Feedback>
               <div className="d-flex justify-content-end">
-                <button type="button" className="btn btn-secondary me-2" onClick={onHide}>
+                <button type="button" disabled={isSubmitting} className="btn btn-secondary me-2" onClick={onHide}>
                   {i18n.t('cancel')}
                 </button>
-                <button type="submit" className="btn btn-primary">{i18n.t('send')}</button>
+                <button type="submit" disabled={isSubmitting} className="btn btn-primary">{i18n.t('send')}</button>
               </div>
             </Form>
           )}

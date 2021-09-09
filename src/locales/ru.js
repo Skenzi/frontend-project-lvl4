@@ -1,7 +1,8 @@
 const ru = {
   translation: {
     username: 'Имя пользователя',
-    nickname: 'Ваш ник',
+    load: 'Идет загрузка данных...',
+    yourNick: 'Ваш ник',
     youSure: 'Вы уверены?',
     remove: 'Удалить',
     rename: 'Переименовать',
@@ -30,6 +31,7 @@ const ru = {
       usernameCountSymbols: 'От 3 до 20 символов',
       passwordCountSymbols: 'Не менее 6 символов',
       channelExist: 'Должно быть уникальным',
+      errorAxios: 'Какие-то проблемы с подключением!',
     },
     channels: 'Каналы',
     messages: {

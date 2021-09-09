@@ -1,9 +1,10 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { Formik } from 'formik';
 import { Form } from 'react-bootstrap';
 import useSocket from '../hooks/index.js';
+import { setError } from '../features/errorsSlice.js';
 
 const MessagesHeader = () => {
   const i18n = useTranslation();
@@ -42,6 +43,7 @@ const MessagesBox = () => {
 };
 
 const MessagesForm = () => {
+  const dispatch = useDispatch();
   const contextSocket = useSocket();
   const { currentChannelId } = useSelector((state) => state.channelsData);
   const i18n = useTranslation();
@@ -53,7 +55,7 @@ const MessagesForm = () => {
         onSubmit={({ message }, actions) => {
           const currentMessage = { username, text: message, channelId: currentChannelId };
           contextSocket.promiseSocket('newMessage', currentMessage)
-            .catch((e) => console.log(e));
+            .catch((e) => dispatch(setError(e)));
           actions.resetForm();
         }}
       >

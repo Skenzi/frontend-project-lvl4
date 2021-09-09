@@ -1,13 +1,19 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Modal } from 'react-bootstrap';
-import useSocket from '../hooks/index.js';
+import { useDispatch } from 'react-redux';
+import useSocket from '../../hooks/index.js';
+import { setError } from '../../features/errorsSlice.js';
 
 const RemoveModal = ({ onHide, modalInfo }) => {
+  const dispatch = useDispatch();
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const contextSocket = useSocket();
   const i18n = useTranslation();
   const handleRemove = () => {
-    contextSocket.promiseSocket('removeChannel', modalInfo.item).catch((e) => console.log(e));
+    setIsSubmitting(true);
+    contextSocket.promiseSocket('removeChannel', modalInfo.item)
+      .catch((e) => dispatch(setError(e)));
     onHide();
   };
   return (
@@ -19,10 +25,10 @@ const RemoveModal = ({ onHide, modalInfo }) => {
       <Modal.Body>
         <p className="lead">{i18n.t('youSure')}</p>
         <div className="d-flex justify-content-end">
-          <button type="button" className="btn btn-secondary me-2" onClick={onHide}>
+          <button type="button" disabled={isSubmitting} className="btn btn-secondary me-2" onClick={onHide}>
             {i18n.t('cancel')}
           </button>
-          <button type="button" className="btn btn-danger" onClick={handleRemove}>{i18n.t('remove')}</button>
+          <button type="button" disabled={isSubmitting} className="btn btn-danger" onClick={handleRemove}>{i18n.t('remove')}</button>
         </div>
       </Modal.Body>
     </Modal>

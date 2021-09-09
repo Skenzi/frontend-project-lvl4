@@ -1,13 +1,14 @@
 const en = {
   translation: {
     send: 'Send',
+    load: 'Data is being loaded...',
     cancel: 'Cancel',
     youSure: 'Are you sure?',
     remove: 'Remove',
     rename: 'Rename',
     required: 'Required to fill',
     username: 'Username',
-    nickname: 'Your nickname',
+    yourNick: 'Your nickname',
     password: 'Password',
     login: {
       logIn: 'Log In',
@@ -30,6 +31,7 @@ const en = {
       usernameCountSymbols: 'From 3 to 20 characters',
       passwordCountSymbols: 'At least 6 characters',
       channelExist: 'Must be unique',
+      errorAxios: 'Some connection problems!',
     },
     channels: 'Channels',
     messages: {

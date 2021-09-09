@@ -10,6 +10,9 @@ module.exports = {
   resolve: {
     extensions: ['.js', '.jsx'],
   },
+  externals: {
+    fs: "require('fs')",
+  },
   output: {
     path: path.join(__dirname, 'dist', 'public'),
     publicPath: '/assets/',

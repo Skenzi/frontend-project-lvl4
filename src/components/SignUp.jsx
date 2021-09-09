@@ -5,10 +5,13 @@ import { useLocation, useHistory } from 'react-router-dom';
 import axios from 'axios';
 import * as yup from 'yup';
 import { useTranslation } from 'react-i18next';
+import { useDispatch } from 'react-redux';
 import routes from '../routes.js';
 import useAuth from '../hooks/index.js';
+import { setError } from '../features/errorsSlice.js';
 
 const SignUpPage = () => {
+  const dispatch = useDispatch();
   const [userExist, setSignUp] = useState(false);
   const isUserExist = () => setSignUp(true);
   const isUserNotExist = () => setSignUp(false);
@@ -42,9 +45,9 @@ const SignUpPage = () => {
         } catch (e) {
           isUserExist();
           if (e.isAxiosError) {
-            console.log(e);
+            dispatch(setError(i18n.t('errors.errorAxios')));
           } else {
-            console.log(e);
+            dispatch(setError(e));
           }
         }
       }}
