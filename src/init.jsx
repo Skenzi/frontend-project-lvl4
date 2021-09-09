@@ -16,7 +16,7 @@ export default async (socket) => {
   if (process.env.NODE_ENV !== 'production') {
     localStorage.debug = 'chat:*';
     const rollbar = new Rollbar({
-      accessToken: process.env.TOKEN,
+      accessToken: '7c1971e40ca441a8bbfd8beb19527b37',
       captureUncaught: true,
       captureUnhandledRejections: true,
     });
