@@ -29,7 +29,7 @@ export default async (socket) => {
   const promiseSocket = (type, data) => new Promise((resolve, reject) => {
     socket.emit(type, data, (response) => (response.status === 'ok' ? resolve() : reject(response.error)));
   });
-  instance
+  await instance
     .use(initReactI18next)
     .init({
       resources,
