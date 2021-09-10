@@ -6,6 +6,7 @@ const en = {
     youSure: 'Are you sure?',
     remove: 'Remove',
     rename: 'Rename',
+    noAccount: 'No account?',
     required: 'Required to fill',
     username: 'Username',
     yourNick: 'Your nickname',

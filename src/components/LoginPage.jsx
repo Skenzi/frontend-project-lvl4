@@ -116,7 +116,7 @@ const LoginPage = () => {
                 </div>
                 <div className="card-footer p-4">
                   <div className="text-center">
-                    <span className="me-1">Нет аккаунта?</span>
+                    <span className="me-1">{i18n.t('noAccount')}</span>
                     <SignUpButton />
                   </div>
                 </div>
