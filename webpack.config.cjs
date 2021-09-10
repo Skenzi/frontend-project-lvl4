@@ -24,13 +24,9 @@ module.exports = {
   },
   plugins: [
     new MiniCssExtractPlugin(),
-    new Dotenv({
-      path: './.env',
-      safe: true,
-      systemvars: true,
-      silent: true,
-    }),
+    new Dotenv(),
   ],
+  target: 'node',
   module: {
     rules: [
       {
