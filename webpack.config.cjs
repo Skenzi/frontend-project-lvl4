@@ -26,7 +26,6 @@ module.exports = {
     new MiniCssExtractPlugin(),
     new Dotenv(),
   ],
-  target: 'node',
   module: {
     rules: [
       {
