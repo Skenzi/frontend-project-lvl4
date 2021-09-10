@@ -3,7 +3,6 @@ import { Provider } from 'react-redux';
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import * as yup from 'yup';
-import Rollbar from 'rollbar';
 import App from './components/App.jsx';
 import store from './store.js';
 import resources from './locales/index.js';
@@ -13,16 +12,6 @@ import {
 import { addNewMessage } from './features/messagesSlice.js';
 
 export default async (socket) => {
-  if (process.env.NODE_ENV !== 'production') {
-    localStorage.debug = 'chat:*';
-    const rollbar = new Rollbar({
-      accessToken: process.env.DB_TOKEN,
-      captureUncaught: true,
-      captureUnhandledRejections: true,
-    });
-
-    rollbar.log('Hello world!');
-  }
   const instance = i18n.createInstance();
   socket.on('newChannel', (newChannel) => {
     store.dispatch(addChannel(newChannel));
