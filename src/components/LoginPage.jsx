@@ -5,10 +5,8 @@ import { Button, Form } from 'react-bootstrap';
 import { useLocation, useHistory, Link } from 'react-router-dom';
 import * as yup from 'yup';
 import axios from 'axios';
-import { useDispatch } from 'react-redux';
 import useAuth from '../hooks/index.js';
 import routes from '../routes.js';
-import { setError } from '../features/errorsSlice.js';
 
 const SignUpButton = () => {
   const i18n = useTranslation();
@@ -20,12 +18,11 @@ const SignUpButton = () => {
 };
 
 const LoginPage = () => {
-  const auth = useAuth();
-  const dispatch = useDispatch();
+  const auth = useAuth('authContext');
+  const [error, setError] = useState();
   const i18n = useTranslation();
   const location = useLocation();
   const history = useHistory();
-  const [loginFailed, setLoginFailed] = useState(false);
   const loginSchema = yup.object().shape({
     username: yup.string().required(),
     password: yup.string().required(),
@@ -35,8 +32,8 @@ const LoginPage = () => {
       initialValues={{ username: '', password: '' }}
       validationSchema={loginSchema}
       onSubmit={async (values, { setSubmitting }) => {
-        setLoginFailed(false);
         try {
+          setError(null);
           const response = await axios.post(routes.loginPath(), values);
           const token = response.data;
           localStorage.setItem('userId', JSON.stringify(token));
@@ -45,11 +42,10 @@ const LoginPage = () => {
           const { from } = location.state || { from: { pathname: '/' } };
           history.replace(from);
         } catch (e) {
-          setLoginFailed(true);
-          if (e.isAxiosError) {
-            dispatch(setError(i18n.t('errors.errorAxios')));
+          if (e.response.status === 401) {
+            setError(i18n.t('errors.fillError'));
           } else {
-            dispatch(setError(e));
+            setError(i18n.t('errors.network'));
           }
         }
       }}
@@ -85,7 +81,7 @@ const LoginPage = () => {
                         autoComplete="username"
                         placeholder={i18n.t('yourNick')}
                         onChange={handleChange}
-                        isInvalid={loginFailed}
+                        isInvalid={error}
                         disabled={isSubmitting}
                         value={values.username}
                       />
@@ -100,13 +96,13 @@ const LoginPage = () => {
                         autoComplete="current-password"
                         placeholder={i18n.t('password')}
                         onChange={handleChange}
-                        isInvalid={loginFailed}
+                        isInvalid={error}
                         disabled={isSubmitting}
                         value={values.password}
                       />
                       <Form.Label htmlFor="password">{i18n.t('password')}</Form.Label>
                       {errors.password && touched.password ? (<p className="text-danger">{errors.password}</p>) : null}
-                      {loginFailed ? (<div className="invalid-tooltip">{i18n.t('errors.fillError')}</div>) : null}
+                      {error ? (<div className="invalid-tooltip">{error}</div>) : null}
                     </Form.Group>
 
                     <Button variant="outline-primary" className="w-100" type="submit" disabled={isSubmitting}>

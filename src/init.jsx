@@ -10,6 +10,7 @@ import {
   addChannel, renameChannel, removeChannel,
 } from './features/channelsSlice';
 import { addNewMessage } from './features/messagesSlice.js';
+import { appContext } from './context/index.js';
 
 export default async (socket) => {
   const instance = i18n.createInstance();
@@ -26,8 +27,8 @@ export default async (socket) => {
     store.dispatch(addNewMessage(newMessage));
   });
 
-  const promiseSocket = (type, data) => new Promise((resolve, reject) => {
-    socket.emit(type, data, (response) => (response.status === 'ok' ? resolve() : reject(response.error)));
+  const socketApi = (type, data) => new Promise((resolve, reject) => {
+    socket.volatile.emit(type, data, (response) => (response.status === 'ok' ? resolve() : reject(response.error)));
   });
   await instance
     .use(initReactI18next)
@@ -46,7 +47,9 @@ export default async (socket) => {
   });
   return (
     <Provider store={store}>
-      <App promiseSocket={promiseSocket} />
+      <appContext.Provider value={{ socketApi }}>
+        <App />
+      </appContext.Provider>
     </Provider>
   );
 };

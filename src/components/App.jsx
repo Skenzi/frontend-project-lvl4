@@ -14,7 +14,7 @@ import LoginPage from './LoginPage.jsx';
 import ChatPage from './ChatPage.jsx';
 import NotFoundPage from './NotFoundPage.jsx';
 import SignUpPage from './SignUp.jsx';
-import authContext from '../context/index.js';
+import { authContext } from '../context/index.js';
 import useAuth from '../hooks/index.js';
 
 const checkToken = () => {
@@ -23,7 +23,7 @@ const checkToken = () => {
 };
 
 const ChatRoute = ({ children, path }) => {
-  const auth = useAuth();
+  const auth = useAuth('authContext');
 
   return (
     <Route
@@ -34,7 +34,7 @@ const ChatRoute = ({ children, path }) => {
   );
 };
 
-const AuthProvider = ({ children, promiseSocket }) => {
+const AuthProvider = ({ children }) => {
   const [loggedIn, setLoggedIn] = useState(checkToken());
   const logIn = () => setLoggedIn(true);
   const logOut = () => {
@@ -44,7 +44,7 @@ const AuthProvider = ({ children, promiseSocket }) => {
 
   return (
     <authContext.Provider value={{
-      loggedIn, logIn, logOut, promiseSocket,
+      loggedIn, logIn, logOut,
     }}
     >
       {children}
@@ -53,7 +53,7 @@ const AuthProvider = ({ children, promiseSocket }) => {
 };
 
 const AuthButton = () => {
-  const auth = useAuth();
+  const auth = useAuth('authContext');
   const i18n = useTranslation();
   return auth.loggedIn ? (
     <Button onClick={() => {
@@ -65,8 +65,8 @@ const AuthButton = () => {
   ) : null;
 };
 
-const App = ({ promiseSocket }) => (
-  <AuthProvider promiseSocket={promiseSocket}>
+const App = () => (
+  <AuthProvider>
     <div className="d-flex flex-column h-100">
       <Router>
         <Navbar bg="white" variant="light" expand="lg" className="shadow-sm">

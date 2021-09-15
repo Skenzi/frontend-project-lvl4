@@ -1,20 +1,21 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Modal } from 'react-bootstrap';
-import { useDispatch } from 'react-redux';
-import useSocket from '../../hooks/index.js';
-import { setError } from '../../features/errorsSlice.js';
+import useApp from '../../hooks/index.js';
 
 const RemoveModal = ({ onHide, modalInfo }) => {
-  const dispatch = useDispatch();
+  const [error, setError] = useState();
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const contextSocket = useSocket();
+  const appContext = useApp('appContext');
   const i18n = useTranslation();
   const handleRemove = () => {
     setIsSubmitting(true);
-    contextSocket.promiseSocket('removeChannel', modalInfo.item)
-      .catch((e) => dispatch(setError(e)));
-    onHide();
+    appContext.socketApi('removeChannel', modalInfo.item)
+      .then(() => {
+        setError(null);
+        onHide();
+      })
+      .catch(() => setError(i18n.t('errors.errorNetwork')));
   };
   return (
     <Modal show={modalInfo.show} onHide={onHide} centered>
@@ -30,6 +31,7 @@ const RemoveModal = ({ onHide, modalInfo }) => {
           </button>
           <button type="button" disabled={isSubmitting} className="btn btn-danger" onClick={handleRemove}>{i18n.t('remove')}</button>
         </div>
+        {error ? <div className="text-danger">{error}</div> : null}
       </Modal.Body>
     </Modal>
   );

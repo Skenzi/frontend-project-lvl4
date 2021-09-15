@@ -1,5 +1,10 @@
 import { useContext } from 'react';
 
-import authContext from '../context/index.js';
+import { appContext, authContext } from '../context/index.js';
 
-export default () => useContext(authContext);
+const mapping = {
+  authContext,
+  appContext,
+};
+
+export default (context) => useContext(mapping[context]);

@@ -1,13 +1,25 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
+import axios from 'axios';
 import MyModal from './modals/index.jsx';
 import ChannelsContainer from './Channels.jsx';
 import MessagesContainer from './Messages.jsx';
 import {
-  fetchContent,
+  setChannels,
 } from '../features/channelsSlice';
-import { setError } from '../features/errorsSlice.js';
+import { setMessages } from '../features/messagesSlice.js';
+import routes from '../routes.js';
+
+const getAuthHeader = () => {
+  const userId = JSON.parse(localStorage.getItem('userId'));
+
+  if (userId && userId.token) {
+    return { Authorization: `Bearer ${userId.token}` };
+  }
+
+  return {};
+};
 
 const ChatPage = () => {
   const i18n = useTranslation();
@@ -18,12 +30,18 @@ const ChatPage = () => {
   const hideModal = () => setModalInfo({ type: null, item: null, show: false });
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(fetchContent()).then(() => {
-      setStateContent('loaded');
-    }).catch((e) => {
-      dispatch(setError(e));
-      setStateContent('error');
+    const response = axios.get(routes.dataPath(), {
+      headers: getAuthHeader(),
     });
+    response.then(({ data }) => {
+      dispatch(setChannels(data));
+      dispatch(setMessages(data));
+      setStateContent('loaded');
+    })
+      .catch((e) => {
+        setStateContent('error');
+        console.log(e);
+      });
   }, []);
   return stateContent !== 'waiting' ? (
     <div className="container h-100 my-4 overflow-hidden rounded shadow" aria-hidden={modalInfo.show}>

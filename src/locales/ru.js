@@ -32,7 +32,7 @@ const ru = {
       usernameCountSymbols: 'От 3 до 20 символов',
       passwordCountSymbols: 'Не менее 6 символов',
       channelExist: 'Должно быть уникальным',
-      errorAxios: 'Какие-то проблемы с подключением!',
+      network: 'Какие-то проблемы с подключением!',
     },
     channels: 'Каналы',
     messages: {

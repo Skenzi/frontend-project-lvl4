@@ -1,10 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { Formik } from 'formik';
 import { Form } from 'react-bootstrap';
-import useSocket from '../hooks/index.js';
-import { setError } from '../features/errorsSlice.js';
+import useApp from '../hooks/index.js';
 
 const MessagesHeader = () => {
   const i18n = useTranslation();
@@ -43,8 +42,8 @@ const MessagesBox = () => {
 };
 
 const MessagesForm = () => {
-  const dispatch = useDispatch();
-  const contextSocket = useSocket();
+  const [error, setError] = useState();
+  const appContext = useApp('appContext');
   const { currentChannelId } = useSelector((state) => state.channelsData);
   const i18n = useTranslation();
   const { username } = JSON.parse(localStorage.getItem('userId'));
@@ -54,9 +53,9 @@ const MessagesForm = () => {
         initialValues={{ message: '' }}
         onSubmit={({ message }, actions) => {
           const currentMessage = { username, text: message, channelId: currentChannelId };
-          contextSocket.promiseSocket('newMessage', currentMessage)
-            .catch((e) => dispatch(setError(e)));
-          actions.resetForm();
+          appContext.socketApi('newMessage', currentMessage)
+            .then(() => actions.resetForm())
+            .catch(() => setError(i18n.t('errors.network')));
         }}
       >
         {({
@@ -82,6 +81,7 @@ const MessagesForm = () => {
                 </button>
               </div>
             </div>
+            {error ? <div className="text-danger">{error}</div> : null}
           </Form>
         )}
       </Formik>

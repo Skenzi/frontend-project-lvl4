@@ -1,28 +1,6 @@
 /* eslint no-param-reassign:
 ["error", { "props": true, "ignorePropertyModificationsFor": ["state"] }] */
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
-import routes from '../routes.js';
-
-const getAuthHeader = () => {
-  const userId = JSON.parse(localStorage.getItem('userId'));
-
-  if (userId && userId.token) {
-    return { Authorization: `Bearer ${userId.token}` };
-  }
-
-  return {};
-};
-
-export const fetchContent = createAsyncThunk(
-  'channelsData/fetchContent',
-  async () => {
-    const response = await axios.get(routes.dataPath(), {
-      headers: getAuthHeader(),
-    });
-    return response.data;
-  },
-);
+import { createSlice } from '@reduxjs/toolkit';
 
 export const channelsSlice = createSlice({
   name: 'channelsData',
@@ -31,11 +9,12 @@ export const channelsSlice = createSlice({
     currentChannelId: null,
   },
   reducers: {
-    setInitialState: (state, { payload }) => {
+    setChannels: (state, { payload }) => {
       state.channels = payload.channels;
       state.currentChannelId = payload.currentChannelId;
     },
     addChannel: (state, { payload }) => {
+      console.log(payload, state);
       state.channels.push(payload);
       state.currentChannelId = payload.id;
     },
@@ -49,20 +28,14 @@ export const channelsSlice = createSlice({
       const indRenamingChannel = state.channels.indexOf(prevRenamingChannel);
       state.channels[indRenamingChannel] = payload;
     },
-    swapCurrentChannelId: (state, { payload }) => {
+    setCurrentChannelId: (state, { payload }) => {
       state.currentChannelId = payload;
-    },
-  },
-  extraReducers: {
-    [fetchContent.fulfilled]: (state, { payload }) => {
-      state.channels = payload.channels;
-      state.currentChannelId = payload.currentChannelId;
     },
   },
 });
 
 export const {
-  setInitialState, addChannel, removeChannel, renameChannel, swapCurrentChannelId,
+  setChannels, addChannel, removeChannel, renameChannel, setCurrentChannelId,
 } = channelsSlice.actions;
 
 export default channelsSlice.reducer;

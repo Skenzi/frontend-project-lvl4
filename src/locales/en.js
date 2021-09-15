@@ -32,7 +32,7 @@ const en = {
       usernameCountSymbols: 'From 3 to 20 characters',
       passwordCountSymbols: 'At least 6 characters',
       channelExist: 'Must be unique',
-      errorAxios: 'Some connection problems!',
+      network: 'Some connection problems!',
     },
     channels: 'Channels',
     messages: {

@@ -2,7 +2,7 @@ import React from 'react';
 import { Dropdown, ButtonGroup, Button } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { useSelector, useDispatch } from 'react-redux';
-import { swapCurrentChannelId } from '../features/channelsSlice.js';
+import { setCurrentChannelId } from '../features/channelsSlice.js';
 
 const ChannelsList = ({ showModal }) => {
   const dispatch = useDispatch();
@@ -24,7 +24,7 @@ const ChannelsList = ({ showModal }) => {
                   variant={classChannelActive}
                   className="w-100 rounded-0 text-start text-truncate"
                   onClick={() => {
-                    dispatch(swapCurrentChannelId(channel.id));
+                    dispatch(setCurrentChannelId(channel.id));
                   }}
                 >
                   <span className="me-1">#</span>
@@ -42,7 +42,7 @@ const ChannelsList = ({ showModal }) => {
                 variant={classChannelActive}
                 className="w-100 rounded-0 text-start text-truncate"
                 onClick={() => {
-                  dispatch(swapCurrentChannelId(channel.id));
+                  dispatch(setCurrentChannelId(channel.id));
                 }}
               >
                 <span className="me-1">#</span>

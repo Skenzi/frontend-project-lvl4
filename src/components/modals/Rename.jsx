@@ -1,21 +1,20 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import * as yup from 'yup';
 import { Formik } from 'formik';
 import {
   Modal, FormControl, Form,
 } from 'react-bootstrap';
-import { useSelector, useDispatch } from 'react-redux';
-import useSocket from '../../hooks/index.js';
-import { setError } from '../../features/errorsSlice.js';
+import { useSelector } from 'react-redux';
+import useApp from '../../hooks/index.js';
 
 const RenameModal = ({ onHide, modalInfo }) => {
-  const dispatch = useDispatch();
-  const contextSocket = useSocket();
+  const [error, setError] = useState();
+  const appContext = useApp('appContext');
   const i18n = useTranslation();
   const { channels } = useSelector((state) => state.channelsData);
   const validationSchema = yup.object().shape({
-    body: yup.string().notOneOf(channels.map((channel) => channel.name)).trim().required(),
+    body: yup.string().notOneOf(channels.map((channel) => channel.name), i18n.t('errors.channelExist')).trim(i18n.t('errors.required')).required(),
   });
   const inputRef = useRef();
   useEffect(() => {
@@ -35,13 +34,18 @@ const RenameModal = ({ onHide, modalInfo }) => {
           validationSchema={validationSchema}
           onSubmit={(values) => {
             const renamingChannel = { ...modalInfo.item, name: values.body };
-            contextSocket.promiseSocket('renameChannel', renamingChannel).catch((e) => dispatch(setError(e)));
-            onHide();
+            appContext.socketApi('renameChannel', renamingChannel)
+              .then(() => {
+                setError(null);
+                onHide();
+              })
+              .catch(() => setError(i18n.t('errors.errorNetwork')));
           }}
         >
           {({
             values,
             isSubmitting,
+            errors,
             isValid,
             handleChange,
             handleSubmit,
@@ -56,7 +60,7 @@ const RenameModal = ({ onHide, modalInfo }) => {
                 name="body"
                 ref={inputRef}
               />
-              <Form.Control.Feedback type="invalid">{values.body.trim() !== '' ? i18n.t('errors.channelExist') : i18n.t('errors.required') }</Form.Control.Feedback>
+              <Form.Control.Feedback type="invalid">{error || errors.body}</Form.Control.Feedback>
               <div className="d-flex justify-content-end">
                 <button type="button" disabled={isSubmitting} className="btn btn-secondary me-2" onClick={onHide}>
                   {i18n.t('cancel')}

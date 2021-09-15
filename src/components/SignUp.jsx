@@ -5,17 +5,12 @@ import { useLocation, useHistory } from 'react-router-dom';
 import axios from 'axios';
 import * as yup from 'yup';
 import { useTranslation } from 'react-i18next';
-import { useDispatch } from 'react-redux';
 import routes from '../routes.js';
 import useAuth from '../hooks/index.js';
-import { setError } from '../features/errorsSlice.js';
 
 const SignUpPage = () => {
-  const dispatch = useDispatch();
-  const [userExist, setSignUp] = useState(false);
-  const isUserExist = () => setSignUp(true);
-  const isUserNotExist = () => setSignUp(false);
-  const auth = useAuth();
+  const [error, setError] = useState(null);
+  const auth = useAuth('authContext');
   const i18n = useTranslation();
   const location = useLocation();
   const history = useHistory();
@@ -34,20 +29,19 @@ const SignUpPage = () => {
       validationSchema={signUpSchema}
       onSubmit={async (values, { setSubmitting }) => {
         try {
+          setError(null);
           const response = await axios.post(routes.signUpPath(), values);
           const token = response.data;
           localStorage.setItem('userId', JSON.stringify(token));
           auth.logIn();
-          isUserNotExist();
           setSubmitting(false);
           const { from } = location.state || { from: { pathname: '/' } };
           history.replace(from);
         } catch (e) {
-          isUserExist();
-          if (e.isAxiosError) {
-            dispatch(setError(i18n.t('errors.errorAxios')));
+          if (e.response.status === 409) {
+            setError(i18n.t('errors.userExist'));
           } else {
-            dispatch(setError(e));
+            setError(i18n.t('errors.network'));
           }
         }
       }}
@@ -83,7 +77,7 @@ const SignUpPage = () => {
                         autoComplete="username"
                         placeholder={i18n.t('username')}
                         onChange={handleChange}
-                        isInvalid={userExist}
+                        isInvalid={error}
                         disabled={isSubmitting}
                         value={values.username}
                       />
@@ -98,7 +92,7 @@ const SignUpPage = () => {
                         autoComplete="new-password"
                         placeholder={i18n.t('password')}
                         onChange={handleChange}
-                        isInvalid={userExist}
+                        isInvalid={error}
                         disabled={isSubmitting}
                         value={values.password}
                       />
@@ -113,13 +107,13 @@ const SignUpPage = () => {
                         autoComplete="new-password"
                         placeholder={i18n.t('password')}
                         onChange={handleChange}
-                        isInvalid={userExist}
+                        isInvalid={error}
                         disabled={isSubmitting}
                         value={values.confirmPassword}
                       />
                       <Form.Label htmlFor="confirmPassword">{i18n.t('signup.confirmPassword')}</Form.Label>
                       {(errors.confirmPassword && touched.confirmPassword) ? (<div className="text-danger">{errors.confirmPassword}</div>) : null}
-                      {userExist ? (<div className="invalid-tooltip">{i18n.t('errors.userExist')}</div>) : null}
+                      {error ? (<div className="invalid-tooltip">{error}</div>) : null}
                     </Form.Group>
                     <Button variant="outline-primary" className="w-100" type="submit" disabled={isSubmitting}>
                       {i18n.t('signup.signUp')}
