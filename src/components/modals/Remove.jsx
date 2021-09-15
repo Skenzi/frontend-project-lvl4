@@ -15,7 +15,7 @@ const RemoveModal = ({ onHide, modalInfo }) => {
         setError(null);
         onHide();
       })
-      .catch(() => setError(i18n.t('errors.errorNetwork')));
+      .catch(() => setError(i18n.t('errors.network')));
   };
   return (
     <Modal show={modalInfo.show} onHide={onHide} centered>

@@ -39,7 +39,7 @@ const RenameModal = ({ onHide, modalInfo }) => {
                 setError(null);
                 onHide();
               })
-              .catch(() => setError(i18n.t('errors.errorNetwork')));
+              .catch(() => setError(i18n.t('errors.network')));
           }}
         >
           {({
@@ -54,7 +54,7 @@ const RenameModal = ({ onHide, modalInfo }) => {
               <FormControl
                 onChange={handleChange}
                 value={values.body}
-                isInvalid={!isValid}
+                isInvalid={!isValid || error}
                 data-testid="rename-channel"
                 className="mb-2"
                 name="body"

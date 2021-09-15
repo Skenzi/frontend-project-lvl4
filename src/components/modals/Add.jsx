@@ -38,7 +38,7 @@ const AddModal = ({ onHide, modalInfo }) => {
                 setError(null);
                 onHide();
               })
-              .catch(() => setError(i18n.t('errors.errorNetwork')));
+              .catch(() => setError(i18n.t('errors.network')));
           }}
         >
           {({
@@ -53,7 +53,7 @@ const AddModal = ({ onHide, modalInfo }) => {
               <FormControl
                 onChange={handleChange}
                 value={values.body}
-                isInvalid={!isValid}
+                isInvalid={!isValid || error}
                 data-testid="add-channel"
                 name="body"
                 ref={inputRef}
