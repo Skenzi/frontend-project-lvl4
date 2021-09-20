@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import axios from 'axios';
 import MyModal from './modals/index.jsx';
 import ChannelsContainer from './Channels.jsx';
@@ -23,7 +23,7 @@ const getAuthHeader = () => {
 
 const ChatPage = () => {
   const i18n = useTranslation();
-  const { error } = useSelector((state) => state.errors);
+  const [error, setError] = useState();
   const [modalInfo, setModalInfo] = useState({ type: null, item: null, show: false });
   const [stateContent, setStateContent] = useState('waiting');
   const showModal = (type, item = null) => setModalInfo({ type, item, show: true });
@@ -38,9 +38,9 @@ const ChatPage = () => {
       dispatch(setMessages(data));
       setStateContent('loaded');
     })
-      .catch((e) => {
+      .catch(() => {
         setStateContent('error');
-        console.log(e);
+        setError(i18n.t('errors.network'));
       });
   }, []);
   return stateContent !== 'waiting' ? (
