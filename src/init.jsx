@@ -60,9 +60,9 @@ export default async (socket) => {
           };
           reject(error);
         } else {
-          clearTimeout(timer);
           resolve();
         }
+        clearTimeout(timer);
       };
     };
 
