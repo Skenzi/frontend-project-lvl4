@@ -42,10 +42,8 @@ export default async (socket) => {
     socket.connect();
   });
 
-  const delay = 3000;
-
   const socketApi = (type, data) => new Promise((resolve, reject) => {
-    const withTimeout = () => {
+    const withTimeout = (delay) => {
       const timer = setTimeout(() => {
         socketState.status = 'errorConnection';
       }, delay);
@@ -66,7 +64,7 @@ export default async (socket) => {
       };
     };
 
-    socket.volatile.emit(type, data, withTimeout());
+    socket.volatile.emit(type, data, withTimeout(3000));
   });
 
   await instance

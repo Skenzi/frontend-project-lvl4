@@ -4,8 +4,24 @@ import { useTranslation } from 'react-i18next';
 import { useSelector, useDispatch } from 'react-redux';
 import { setCurrentChannelId } from '../slices/channelsSlice.js';
 
-const ChannelsList = ({ showModal }) => {
+const ButtonChannel = ({ classChannelActive, channel }) => {
   const dispatch = useDispatch();
+  return (
+    <Button
+      type="button"
+      variant={classChannelActive}
+      className="w-100 rounded-0 text-start text-truncate"
+      onClick={() => {
+        dispatch(setCurrentChannelId(channel.id));
+      }}
+    >
+      <span className="me-1">#</span>
+      {channel.name}
+    </Button>
+  );
+};
+
+const ChannelsList = ({ showModal }) => {
   const i18n = useTranslation();
   const { channels, currentChannelId } = useSelector((state) => state.channelsData);
   const handleClickMenu = (type, channel) => () => {
@@ -19,17 +35,7 @@ const ChannelsList = ({ showModal }) => {
           <li key={channel.id} className="nav-item w-100">
             {channel.removable ? (
               <Dropdown as={ButtonGroup} className="d-flex">
-                <Button
-                  type="button"
-                  variant={classChannelActive}
-                  className="w-100 rounded-0 text-start text-truncate"
-                  onClick={() => {
-                    dispatch(setCurrentChannelId(channel.id));
-                  }}
-                >
-                  <span className="me-1">#</span>
-                  {channel.name}
-                </Button>
+                <ButtonChannel classChannelActive={classChannelActive} channel={channel} />
                 <Dropdown.Toggle variant={classChannelActive} split className="flex-grow-0" />
                 <Dropdown.Menu>
                   <Dropdown.Item href="#" onClick={handleClickMenu('removing', channel)}>{i18n.t('remove')}</Dropdown.Item>
@@ -37,17 +43,7 @@ const ChannelsList = ({ showModal }) => {
                 </Dropdown.Menu>
               </Dropdown>
             ) : (
-              <Button
-                type="button"
-                variant={classChannelActive}
-                className="w-100 rounded-0 text-start text-truncate"
-                onClick={() => {
-                  dispatch(setCurrentChannelId(channel.id));
-                }}
-              >
-                <span className="me-1">#</span>
-                {channel.name}
-              </Button>
+              <ButtonChannel classChannelActive={classChannelActive} channel={channel} />
             )}
           </li>
         );

@@ -32,9 +32,13 @@ const RenameModal = ({ onHide, modalInfo }) => {
           setError(null);
           onHide();
         })
-        .catch(() => {
+        .catch((e) => {
           formik.setSubmitting(false);
-          setError(i18n.t('errors.network'));
+          if (e.response.status === 408) {
+            setError(i18n.t('errors.timeout'));
+          } else {
+            setError(i18n.t('errors.network'));
+          }
         });
     },
   });
