@@ -1,6 +1,4 @@
 import { createContext } from 'react';
 
-const appContext = createContext({});
-const authContext = createContext({});
-
-export { appContext, authContext };
+export const apiContext = createContext({});
+export const authContext = createContext({});

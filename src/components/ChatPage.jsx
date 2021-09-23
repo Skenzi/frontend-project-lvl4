@@ -5,10 +5,8 @@ import axios from 'axios';
 import MyModal from './modals/index.jsx';
 import ChannelsContainer from './Channels.jsx';
 import MessagesContainer from './Messages.jsx';
-import {
-  setChannels,
-} from '../features/channelsSlice';
-import { setMessages } from '../features/messagesSlice.js';
+import { setChannels } from '../slices/channelsSlice';
+import { setMessages } from '../slices/messagesSlice.js';
 import routes from '../routes.js';
 
 const getAuthHeader = () => {
@@ -29,6 +27,7 @@ const ChatPage = () => {
   const showModal = (type, item = null) => setModalInfo({ type, item, show: true });
   const hideModal = () => setModalInfo({ type: null, item: null, show: false });
   const dispatch = useDispatch();
+
   useEffect(() => {
     const response = axios.get(routes.dataPath(), {
       headers: getAuthHeader(),
@@ -43,6 +42,7 @@ const ChatPage = () => {
         setError(i18n.t('errors.network'));
       });
   }, []);
+
   return stateContent !== 'waiting' ? (
     <div className="container h-100 my-4 overflow-hidden rounded shadow" aria-hidden={modalInfo.show}>
       {error ? <div className="position-absolute top-0 start-50 translate-middle-x w-25 alert alert-danger">{error}</div> : null}

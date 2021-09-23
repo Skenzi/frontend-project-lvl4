@@ -27,6 +27,7 @@ const en = {
     },
     errors: {
       userExist: 'This user is exist',
+      timeout: 'The answer is too long',
       fillError: 'The username or password is incorrect',
       confirmPasswords: 'Passwords must match',
       usernameCountSymbols: 'From 3 to 20 characters',

@@ -1,21 +1,28 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Modal } from 'react-bootstrap';
-import useApp from '../../hooks/index.js';
+import { useApi } from '../../hooks/index.js';
 
 const RemoveModal = ({ onHide, modalInfo }) => {
   const [error, setError] = useState();
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const appContext = useApp('appContext');
+  const apiContext = useApi();
   const i18n = useTranslation();
   const handleRemove = () => {
     setIsSubmitting(true);
-    appContext.socketApi('removeChannel', modalInfo.item)
+    apiContext.socketApi('removeChannel', modalInfo.item)
       .then(() => {
         setError(null);
         onHide();
       })
-      .catch(() => setError(i18n.t('errors.network')));
+      .catch((e) => {
+        setIsSubmitting(false);
+        if (e.response.status === 408) {
+          setError(i18n.t('errors.timeout'));
+        } else {
+          setError(i18n.t('errors.network'));
+        }
+      });
   };
   return (
     <Modal show={modalInfo.show} onHide={onHide} centered>

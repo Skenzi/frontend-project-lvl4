@@ -2,7 +2,7 @@ import React from 'react';
 import { Dropdown, ButtonGroup, Button } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { useSelector, useDispatch } from 'react-redux';
-import { setCurrentChannelId } from '../features/channelsSlice.js';
+import { setCurrentChannelId } from '../slices/channelsSlice.js';
 
 const ChannelsList = ({ showModal }) => {
   const dispatch = useDispatch();

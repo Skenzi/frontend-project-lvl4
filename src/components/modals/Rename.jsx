@@ -1,16 +1,16 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import * as yup from 'yup';
-import { Formik } from 'formik';
+import { useFormik } from 'formik';
 import {
   Modal, FormControl, Form,
 } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
-import useApp from '../../hooks/index.js';
+import { useApi } from '../../hooks/index.js';
 
 const RenameModal = ({ onHide, modalInfo }) => {
   const [error, setError] = useState();
-  const appContext = useApp('appContext');
+  const apiContext = useApi();
   const i18n = useTranslation();
   const { channels } = useSelector((state) => state.channelsData);
   const validationSchema = yup.object().shape({
@@ -19,6 +19,24 @@ const RenameModal = ({ onHide, modalInfo }) => {
   const inputRef = useRef();
   useEffect(() => {
     inputRef.current.select();
+  }, []);
+  const formik = useFormik({
+    initialValues: {
+      body: modalInfo.item.name,
+    },
+    validationSchema,
+    onSubmit: (values) => {
+      const renamingChannel = { ...modalInfo.item, name: values.body };
+      apiContext.socketApi('renameChannel', renamingChannel)
+        .then(() => {
+          setError(null);
+          onHide();
+        })
+        .catch(() => {
+          formik.setSubmitting(false);
+          setError(i18n.t('errors.network'));
+        });
+    },
   });
   return (
     <Modal show={modalInfo.show} onHide={onHide} centered>
@@ -27,49 +45,24 @@ const RenameModal = ({ onHide, modalInfo }) => {
       </Modal.Header>
 
       <Modal.Body>
-        <Formik
-          initialValues={{
-            body: modalInfo.item.name,
-          }}
-          validationSchema={validationSchema}
-          onSubmit={(values) => {
-            const renamingChannel = { ...modalInfo.item, name: values.body };
-            appContext.socketApi('renameChannel', renamingChannel)
-              .then(() => {
-                setError(null);
-                onHide();
-              })
-              .catch(() => setError(i18n.t('errors.network')));
-          }}
-        >
-          {({
-            values,
-            isSubmitting,
-            errors,
-            isValid,
-            handleChange,
-            handleSubmit,
-          }) => (
-            <Form onSubmit={handleSubmit}>
-              <FormControl
-                onChange={handleChange}
-                value={values.body}
-                isInvalid={!isValid || error}
-                data-testid="rename-channel"
-                className="mb-2"
-                name="body"
-                ref={inputRef}
-              />
-              <Form.Control.Feedback type="invalid">{error || errors.body}</Form.Control.Feedback>
-              <div className="d-flex justify-content-end">
-                <button type="button" disabled={isSubmitting} className="btn btn-secondary me-2" onClick={onHide}>
-                  {i18n.t('cancel')}
-                </button>
-                <button type="submit" disabled={isSubmitting} className="btn btn-primary">{i18n.t('send')}</button>
-              </div>
-            </Form>
-          )}
-        </Formik>
+        <Form onSubmit={formik.handleSubmit}>
+          <FormControl
+            onChange={formik.handleChange}
+            value={formik.values.body}
+            isInvalid={!formik.isValid || error}
+            data-testid="rename-channel"
+            className="mb-2"
+            name="body"
+            ref={inputRef}
+          />
+          <Form.Control.Feedback type="invalid">{error || formik.errors.body}</Form.Control.Feedback>
+          <div className="d-flex justify-content-end">
+            <button type="button" disabled={formik.isSubmitting} className="btn btn-secondary me-2" onClick={onHide}>
+              {i18n.t('cancel')}
+            </button>
+            <button type="submit" disabled={formik.isSubmitting} className="btn btn-primary">{i18n.t('send')}</button>
+          </div>
+        </Form>
       </Modal.Body>
     </Modal>
   );

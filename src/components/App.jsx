@@ -15,7 +15,7 @@ import ChatPage from './ChatPage.jsx';
 import NotFoundPage from './NotFoundPage.jsx';
 import SignUpPage from './SignUp.jsx';
 import { authContext } from '../context/index.js';
-import useAuth from '../hooks/index.js';
+import { useAuth } from '../hooks/index.js';
 
 const checkToken = () => {
   const userId = JSON.parse(localStorage.getItem('userId'));
@@ -23,7 +23,7 @@ const checkToken = () => {
 };
 
 const ChatRoute = ({ children, path }) => {
-  const auth = useAuth('authContext');
+  const auth = useAuth();
 
   return (
     <Route
@@ -53,7 +53,7 @@ const AuthProvider = ({ children }) => {
 };
 
 const AuthButton = () => {
-  const auth = useAuth('authContext');
+  const auth = useAuth();
   const i18n = useTranslation();
   return auth.loggedIn ? (
     <Button onClick={() => {

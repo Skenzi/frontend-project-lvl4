@@ -9,12 +9,12 @@ const modals = {
   renaming: RenameModal,
 };
 
-const renderModal = ({ promiseSocket, onHide, modalInfo }) => {
+const renderModal = ({ onHide, modalInfo }) => {
   if (!modalInfo.type) {
     return null;
   }
   const Component = modals[modalInfo.type];
-  return <Component modalInfo={modalInfo} onHide={onHide} promiseSocket={promiseSocket} />;
+  return <Component modalInfo={modalInfo} onHide={onHide} />;
 };
 
 export default renderModal;

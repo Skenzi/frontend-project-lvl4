@@ -27,6 +27,7 @@ const ru = {
     errors: {
       userExist: 'Пользователь уже существует',
       required: 'Обязательное поле',
+      timeout: 'Слишком долгий ответ',
       fillError: 'Неверные имя пользователя или пароль',
       confirmPasswords: 'Пароли должны совпадать',
       usernameCountSymbols: 'От 3 до 20 символов',
