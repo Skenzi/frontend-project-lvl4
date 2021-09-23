@@ -48,18 +48,18 @@ export default async (socket) => {
     const withTimeout = () => {
       const timer = setTimeout(() => {
         socketState.status = 'errorConnection';
-        const error = new Error('errorConnection');
-        error.response = {
-          status: 408,
-        };
-        reject(error);
       }, delay);
 
       return (resp) => {
         if (resp.status !== 'ok') {
           reject(resp.error);
-        }
-        if (socketState.status === 'ok') {
+        } else if (socketState.status === 'errorConnection') {
+          const error = new Error('errorConnection');
+          error.response = {
+            status: 408,
+          };
+          reject(error);
+        } else {
           clearTimeout(timer);
           resolve();
         }
