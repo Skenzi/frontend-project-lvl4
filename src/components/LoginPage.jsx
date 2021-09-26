@@ -43,7 +43,7 @@ const LoginPage = () => {
         if (e.response.status === 401) {
           setError(i18n.t('errors.fillError'));
         } else if (e.response.status === 409) {
-          setError(i18n.t('errors.fillError'));
+          setError(i18n.t('errors.repeatRequest'));
         } else {
           setError(i18n.t('errors.network'));
         }

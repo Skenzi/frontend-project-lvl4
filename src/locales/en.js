@@ -27,6 +27,7 @@ const en = {
     },
     errors: {
       pageNotFound: '404 Page not found',
+      repeatRequest: 'Try logging in again',
       userExist: 'This user is exist',
       timeout: 'The answer is too long',
       fillError: 'The username or password is incorrect',

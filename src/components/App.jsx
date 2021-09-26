@@ -17,14 +17,14 @@ import SignUpPage from './SignUp.jsx';
 import { authContext } from '../context/index.js';
 import { useAuth } from '../hooks/index.js';
 
-const ChatRoute = ({ path }) => {
+const PrivateRoute = ({ path }) => {
   const { userId } = useAuth();
 
   return (
     <Route
       path={path}
       render={({ location }) => (
-        userId && userId.token ? <ChatPage /> : <Redirect to={{ pathname: '/login', state: { from: location } }} />)}
+        userId.token ? <ChatPage /> : <Redirect to={{ pathname: '/login', state: { from: location } }} />)}
     />
   );
 };
@@ -35,7 +35,7 @@ const AuthProvider = ({ children }) => {
     token: null,
   });
   const logIn = (userData) => {
-    localStorage.setItem('userId', JSON.stringify(userData.token));
+    localStorage.setItem('userId', JSON.stringify(userData));
     setUserId({
       username: userData.username,
       token: userData.token,
@@ -49,7 +49,7 @@ const AuthProvider = ({ children }) => {
     });
   };
 
-  const userRequestOptions = userId && userId.token ? { Authorization: `Bearer ${userId.token}` } : {};
+  const userRequestOptions = userId.token ? { Authorization: `Bearer ${userId.token}` } : {};
 
   return (
     <authContext.Provider value={{
@@ -64,7 +64,7 @@ const AuthProvider = ({ children }) => {
 const AuthButton = () => {
   const auth = useAuth();
   const i18n = useTranslation();
-  return auth.userId && auth.userId.token ? (
+  return auth.userId.token ? (
     <Button onClick={() => {
       auth.logOut();
     }}
@@ -92,7 +92,7 @@ const App = () => (
           <Route path="/signup">
             <SignUpPage />
           </Route>
-          <ChatRoute path="/" />
+          <PrivateRoute exact path="/" />
           <Route path="*">
             <NotFoundPage />
           </Route>

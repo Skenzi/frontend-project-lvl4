@@ -33,10 +33,10 @@ const ChatPage = () => {
       setStateContent('loaded');
     })
       .catch((e) => {
+        setStateContent('error');
         if (e.response.status === 401) {
           history.replace({ pathname: '/login' });
         }
-        setStateContent('error');
         setError(i18n.t('errors.network'));
       });
   }, []);
