@@ -86,10 +86,10 @@ const App = () => (
         </Navbar>
 
         <Switch>
-          <Route path="/login">
+          <Route exact path="/login">
             <LoginPage />
           </Route>
-          <Route path="/signup">
+          <Route exact path="/signup">
             <SignUpPage />
           </Route>
           <PrivateRoute exact path="/" />

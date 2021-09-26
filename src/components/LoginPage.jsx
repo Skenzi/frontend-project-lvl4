@@ -11,7 +11,7 @@ import routes from '../routes.js';
 const SignUpButton = () => {
   const i18n = useTranslation();
   return (
-    <Link to="/signup">
+    <Link to="/signup/">
       {i18n.t('signup.register')}
     </Link>
   );
