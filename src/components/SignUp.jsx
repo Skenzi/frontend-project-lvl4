@@ -30,9 +30,8 @@ const SignUpPage = () => {
       try {
         setError(null);
         const response = await axios.post(routes.signUpPath(), values);
-        const token = response.data;
-        localStorage.setItem('userId', JSON.stringify(token));
-        auth.logIn();
+        const userData = response.data;
+        auth.logIn(userData);
         setSubmitting(false);
         const { from } = location.state || { from: { pathname: '/' } };
         history.replace(from);

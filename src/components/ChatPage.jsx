@@ -2,24 +2,17 @@ import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import axios from 'axios';
+import { useHistory } from 'react-router-dom';
 import MyModal from './modals/index.jsx';
 import ChannelsContainer from './Channels.jsx';
 import MessagesContainer from './Messages.jsx';
 import { setChannels } from '../slices/channelsSlice';
 import { setMessages } from '../slices/messagesSlice.js';
 import routes from '../routes.js';
-
-const getAuthHeader = () => {
-  const userId = JSON.parse(localStorage.getItem('userId'));
-
-  if (userId && userId.token) {
-    return { Authorization: `Bearer ${userId.token}` };
-  }
-
-  return {};
-};
+import { useAuth } from '../hooks/index.js';
 
 const ChatPage = () => {
+  const apiContext = useAuth();
   const i18n = useTranslation();
   const [error, setError] = useState();
   const [modalInfo, setModalInfo] = useState({ type: null, item: null, show: false });
@@ -28,16 +21,21 @@ const ChatPage = () => {
   const hideModal = () => setModalInfo({ type: null, item: null, show: false });
   const dispatch = useDispatch();
 
+  const history = useHistory();
+
   useEffect(() => {
     const response = axios.get(routes.dataPath(), {
-      headers: getAuthHeader(),
+      headers: apiContext.userRequestOptions,
     });
     response.then(({ data }) => {
       dispatch(setChannels(data));
       dispatch(setMessages(data));
       setStateContent('loaded');
     })
-      .catch(() => {
+      .catch((e) => {
+        if (e.response.status === 401) {
+          history.replace({ pathname: '/login' });
+        }
         setStateContent('error');
         setError(i18n.t('errors.network'));
       });

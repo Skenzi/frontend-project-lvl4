@@ -1,17 +1,19 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
+import { animateScroll as scroll, Element as ScrollProvider } from 'react-scroll';
 import { useFormik } from 'formik';
 import { Form } from 'react-bootstrap';
-import { useApi } from '../hooks/index.js';
+import { useApi, useAuth } from '../hooks/index.js';
+import messagesSelector from '../stateSelectors/messagesSelectors.js';
+import channelsSelector from '../stateSelectors/channelsSelectors.js';
 
 const MessagesHeader = () => {
   const i18n = useTranslation();
-  const { currentChannelId, channels } = useSelector((state) => state.channelsData);
-  const { messages } = useSelector((state) => state.messagesData);
-  const currentMessages = messages.filter((message) => message.channelId === currentChannelId);
+  const { currentChannelId, channels } = useSelector(channelsSelector);
+  const messages = useSelector(messagesSelector);
   const currentChannel = channels.find(({ id }) => currentChannelId === id);
-  const messagesCount = currentMessages.length;
+  const messagesCount = messages.length;
   return (
     <div className="bg-light mb-4 p-3 shadow-sm small">
       <p className="m-0">
@@ -25,28 +27,40 @@ const MessagesHeader = () => {
 };
 
 const MessagesBox = () => {
-  const { currentChannelId } = useSelector((state) => state.channelsData);
-  const { messages } = useSelector((state) => state.messagesData);
-  const currentMessages = messages.filter((message) => message.channelId === currentChannelId);
+  const messages = useSelector(messagesSelector);
+  useEffect(() => {
+    scroll.scrollToBottom({ containerId: 'messages-container' });
+  }, [messages]);
   return (
-    <div className="chat-messages overflow-auto px-5 " id="messages-box">
-      {currentMessages.map(({ text, username, id }) => (
-        <div className="text-break mb-2" key={id}>
-          <b>{username}</b>
-          {': '}
-          {text}
-        </div>
-      ))}
-    </div>
+    <ScrollProvider className="chat-messages overflow-auto px-5" id="messages-container">
+      <div className="chat-messages overflow-auto px-5" id="messages-box">
+        {messages.map(({ text, username, id }) => (
+          <div className="text-break mb-2" key={id}>
+            <b>{username}</b>
+            {': '}
+            {text}
+          </div>
+        ))}
+      </div>
+    </ScrollProvider>
   );
 };
 
 const MessagesForm = () => {
   const [error, setError] = useState();
+  const messageInput = useRef();
   const apiContext = useApi();
-  const { currentChannelId } = useSelector((state) => state.channelsData);
+  const auth = useAuth();
+  const { currentChannelId } = useSelector(channelsSelector);
+
+  useEffect(() => {
+    messageInput.current.focus();
+  }, [currentChannelId]);
+
   const i18n = useTranslation();
-  const { username } = JSON.parse(localStorage.getItem('userId'));
+
+  const { username } = auth.userId;
+
   const formik = useFormik({
     initialValues: { message: '' },
     onSubmit: ({ message }, actions) => {
@@ -69,6 +83,7 @@ const MessagesForm = () => {
           <Form.Control
             type="text"
             name="message"
+            ref={messageInput}
             data-testid="new-message"
             placeholder={i18n.t('inputMessagePlaceholder')}
             className="border-0 p-0 ps-2"

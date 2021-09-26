@@ -3,6 +3,7 @@ import { Dropdown, ButtonGroup, Button } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { useSelector, useDispatch } from 'react-redux';
 import { setCurrentChannelId } from '../slices/channelsSlice.js';
+import channelsSelector from '../stateSelectors/channelsSelectors.js';
 
 const ButtonChannel = ({ classChannelActive, channel }) => {
   const dispatch = useDispatch();
@@ -23,7 +24,7 @@ const ButtonChannel = ({ classChannelActive, channel }) => {
 
 const ChannelsList = ({ showModal }) => {
   const i18n = useTranslation();
-  const { channels, currentChannelId } = useSelector((state) => state.channelsData);
+  const { channels, currentChannelId } = useSelector(channelsSelector);
   const handleClickMenu = (type, channel) => () => {
     showModal(type, channel);
   };

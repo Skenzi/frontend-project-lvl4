@@ -7,12 +7,13 @@ import {
 } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import { useApi } from '../../hooks/index.js';
+import channelsSelector from '../../stateSelectors/channelsSelectors.js';
 
 const RenameModal = ({ onHide, modalInfo }) => {
   const [error, setError] = useState();
   const apiContext = useApi();
   const i18n = useTranslation();
-  const { channels } = useSelector((state) => state.channelsData);
+  const { channels } = useSelector(channelsSelector);
   const validationSchema = yup.object().shape({
     body: yup.string().notOneOf(channels.map((channel) => channel.name), i18n.t('errors.channelExist')).trim(i18n.t('errors.required')).required(),
   });

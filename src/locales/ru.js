@@ -25,6 +25,7 @@ const ru = {
       removeChannel: 'Удалить канал',
     },
     errors: {
+      pageNotFound: '404 Страница не найдена',
       userExist: 'Пользователь уже существует',
       required: 'Обязательное поле',
       timeout: 'Слишком долгий ответ',

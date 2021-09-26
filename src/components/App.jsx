@@ -17,34 +17,43 @@ import SignUpPage from './SignUp.jsx';
 import { authContext } from '../context/index.js';
 import { useAuth } from '../hooks/index.js';
 
-const checkToken = () => {
-  const userId = JSON.parse(localStorage.getItem('userId'));
-  return !!(userId && userId.token);
-};
-
-const ChatRoute = ({ children, path }) => {
-  const auth = useAuth();
+const ChatRoute = ({ path }) => {
+  const { userId } = useAuth();
 
   return (
     <Route
       path={path}
       render={({ location }) => (
-        auth.loggedIn ? children : <Redirect to={{ pathname: '/login', state: { from: location } }} />)}
+        userId && userId.token ? <ChatPage /> : <Redirect to={{ pathname: '/login', state: { from: location } }} />)}
     />
   );
 };
 
 const AuthProvider = ({ children }) => {
-  const [loggedIn, setLoggedIn] = useState(checkToken());
-  const logIn = () => setLoggedIn(true);
+  const [userId, setUserId] = useState(() => JSON.parse(localStorage.getItem('userId')) || {
+    username: null,
+    token: null,
+  });
+  const logIn = (userData) => {
+    localStorage.setItem('userId', JSON.stringify(userData.token));
+    setUserId({
+      username: userData.username,
+      token: userData.token,
+    });
+  };
   const logOut = () => {
     localStorage.removeItem('userId');
-    setLoggedIn(false);
+    setUserId({
+      username: null,
+      token: null,
+    });
   };
+
+  const userRequestOptions = userId && userId.token ? { Authorization: `Bearer ${userId.token}` } : {};
 
   return (
     <authContext.Provider value={{
-      loggedIn, logIn, logOut,
+      logIn, logOut, userRequestOptions, userId, setUserId,
     }}
     >
       {children}
@@ -55,7 +64,7 @@ const AuthProvider = ({ children }) => {
 const AuthButton = () => {
   const auth = useAuth();
   const i18n = useTranslation();
-  return auth.loggedIn ? (
+  return auth.userId && auth.userId.token ? (
     <Button onClick={() => {
       auth.logOut();
     }}
@@ -83,9 +92,7 @@ const App = () => (
           <Route path="/signup">
             <SignUpPage />
           </Route>
-          <ChatRoute path="/">
-            <ChatPage />
-          </ChatRoute>
+          <ChatRoute path="/" />
           <Route path="*">
             <NotFoundPage />
           </Route>

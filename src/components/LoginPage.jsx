@@ -34,14 +34,15 @@ const LoginPage = () => {
       try {
         setError(null);
         const response = await axios.post(routes.loginPath(), values);
-        const token = response.data;
-        localStorage.setItem('userId', JSON.stringify(token));
-        auth.logIn();
+        const userData = response.data;
+        auth.logIn(userData);
         setSubmitting(false);
         const { from } = location.state || { from: { pathname: '/' } };
         history.replace(from);
       } catch (e) {
         if (e.response.status === 401) {
+          setError(i18n.t('errors.fillError'));
+        } else if (e.response.status === 409) {
           setError(i18n.t('errors.fillError'));
         } else {
           setError(i18n.t('errors.network'));

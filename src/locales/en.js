@@ -26,6 +26,7 @@ const en = {
       removeChannel: 'Remove channel',
     },
     errors: {
+      pageNotFound: '404 Page not found',
       userExist: 'This user is exist',
       timeout: 'The answer is too long',
       fillError: 'The username or password is incorrect',
