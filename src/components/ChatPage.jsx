@@ -60,7 +60,7 @@ const ChatPage = () => {
           <MessagesContainer />
         </div>
       </div>
-      <MyModal />
+      <MyModal modalInfo={modalInfo} />
     </div>
   ) : <div className="alert alert-primary text-center my-4 overflow-hidden rounded shadow">{i18n.t('load')}</div>;
 };
