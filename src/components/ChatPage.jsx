@@ -23,22 +23,21 @@ const ChatPage = () => {
 
   const history = useHistory();
 
-  useEffect(() => {
-    const response = axios.get(routes.dataPath(), {
-      headers: apiContext.getAuthHeader(),
-    });
-    response.then(({ data }) => {
+  useEffect(async () => {
+    try {
+      const { data } = await axios.get(routes.dataPath(), {
+        headers: apiContext.getAuthHeader(),
+      });
       dispatch(setChannels(data));
       dispatch(setMessages(data));
       setStateContent('loaded');
-    })
-      .catch((e) => {
-        setStateContent('error');
-        if (e.response.status === 401) {
-          history.replace({ pathname: routes.loginPagePath() });
-        }
-        setError(i18n.t('errors.network'));
-      });
+    } catch (e) {
+      setStateContent('error');
+      if (e.response.status === 401) {
+        history.replace({ pathname: routes.loginPagePath() });
+      }
+      setError(i18n.t('errors.network'));
+    }
   }, []);
 
   return stateContent !== 'waiting' ? (
