@@ -18,6 +18,7 @@ const ChatPage = () => {
   const dispatch = useDispatch();
   const modalInfo = useSelector(modalSelector);
   const [error, setError] = useState(null);
+  const [stateContent, setStateContent] = useState('waiting');
 
   const history = useHistory();
 
@@ -29,7 +30,9 @@ const ChatPage = () => {
         });
         dispatch(setChannels(data));
         dispatch(setMessages(data));
+        setStateContent('loaded');
       } catch (e) {
+        setStateContent('error');
         if (e.response.status === 401) {
           history.replace({ pathname: routes.loginPagePath() });
         }
@@ -39,7 +42,7 @@ const ChatPage = () => {
     fetchContent();
   }, []);
 
-  return (
+  return stateContent !== 'waiting' ? (
     <div className="container h-100 my-4 overflow-hidden rounded shadow" aria-hidden={modalInfo.show}>
       {error ? <div className="position-absolute top-0 start-50 translate-middle-x w-25 alert alert-danger">{error}</div> : null}
       <div className="row h-100 bg-white flex-md-row">
@@ -52,7 +55,7 @@ const ChatPage = () => {
       </div>
       <MyModal />
     </div>
-  ) || <div className="alert alert-primary text-center my-4 overflow-hidden rounded shadow">{i18n.t('load')}</div>;
+  ) : <div className="alert alert-primary text-center my-4 overflow-hidden rounded shadow">{i18n.t('load')}</div>;
 };
 
 export default ChatPage;
