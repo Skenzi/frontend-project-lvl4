@@ -23,6 +23,9 @@ const ChatPage = () => {
   const history = useHistory();
 
   useEffect(() => {
+    const stateMount = {
+      isMount: true,
+    };
     const fetchContent = async () => {
       try {
         const { data } = await axios.get(routes.dataPath(), {
@@ -30,7 +33,9 @@ const ChatPage = () => {
         });
         dispatch(setChannels(data));
         dispatch(setMessages(data));
-        setStateContent('loaded');
+        if (stateMount.isMount) {
+          setStateContent('loaded');
+        }
       } catch (e) {
         setStateContent('error');
         if (e.response.status === 401) {
@@ -40,6 +45,7 @@ const ChatPage = () => {
       }
     };
     fetchContent();
+    return () => { stateMount.isMount = false; };
   }, []);
 
   return stateContent !== 'waiting' ? (
