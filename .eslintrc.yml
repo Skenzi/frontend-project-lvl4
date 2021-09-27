@@ -4,6 +4,8 @@ root: true
 
 plugins:
   - functional
+  - react
+  - react-hooks
 
 extends:
   - airbnb

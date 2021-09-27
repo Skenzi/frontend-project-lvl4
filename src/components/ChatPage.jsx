@@ -46,6 +46,7 @@ const ChatPage = () => {
     };
     fetchContent();
     return () => { stateMount.isMount = false; };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return stateContent !== 'waiting' ? (
