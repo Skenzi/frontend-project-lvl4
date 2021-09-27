@@ -15,33 +15,29 @@ import { modalSelector } from '../stateSelectors/selectors.js';
 const ChatPage = () => {
   const apiContext = useAuth();
   const i18n = useTranslation();
+  const dispatch = useDispatch();
+  const modalInfo = useSelector(modalSelector);
   const [error, setError] = useState(null);
   const [stateContent, setStateContent] = useState('waiting');
-  const dispatch = useDispatch();
-
-  const modalInfo = useSelector(modalSelector);
 
   const history = useHistory();
 
-  useEffect(() => {
-    const fetchContent = async () => {
-      try {
-        const { data } = await axios.get(routes.dataPath(), {
-          headers: apiContext.getAuthHeader(),
-        });
-        dispatch(setChannels(data));
-        dispatch(setMessages(data));
-        setStateContent('loaded');
-      } catch (e) {
-        setStateContent('error');
-        if (e.response.status === 401) {
-          history.replace({ pathname: routes.loginPagePath() });
-        }
-        setError(i18n.t('errors.network'));
+  useEffect(async () => {
+    try {
+      const { data } = await axios.get(routes.dataPath(), {
+        headers: apiContext.getAuthHeader(),
+      });
+      dispatch(setChannels(data));
+      dispatch(setMessages(data));
+      setStateContent('loaded');
+    } catch (e) {
+      setStateContent('error');
+      if (e.response.status === 401) {
+        history.replace({ pathname: routes.loginPagePath() });
       }
-    };
-    fetchContent();
-  }, []);
+      setError(i18n.t('errors.network'));
+    }
+  }, [history]);
 
   return stateContent !== 'waiting' ? (
     <div className="container h-100 my-4 overflow-hidden rounded shadow" aria-hidden={modalInfo.show}>
