@@ -5,13 +5,13 @@ import { animateScroll as scroll, Element as ScrollProvider } from 'react-scroll
 import { useFormik } from 'formik';
 import { Form } from 'react-bootstrap';
 import { useApi, useAuth } from '../hooks/index.js';
-import messagesSelector from '../stateSelectors/messagesSelectors.js';
-import channelsSelector from '../stateSelectors/channelsSelectors.js';
+import { channelsSelector, currentMessagesSelector, channelIdSelector } from '../stateSelectors/selectors.js';
 
 const MessagesHeader = () => {
   const i18n = useTranslation();
-  const { currentChannelId, channels } = useSelector(channelsSelector);
-  const messages = useSelector(messagesSelector);
+  const channels = useSelector(channelsSelector);
+  const currentChannelId = useSelector(channelIdSelector);
+  const messages = useSelector(currentMessagesSelector);
   const currentChannel = channels.find(({ id }) => currentChannelId === id);
   const messagesCount = messages.length;
   return (
@@ -27,7 +27,7 @@ const MessagesHeader = () => {
 };
 
 const MessagesBox = () => {
-  const messages = useSelector(messagesSelector);
+  const messages = useSelector(currentMessagesSelector);
   useEffect(() => {
     scroll.scrollToBottom({ containerId: 'messages-container' });
   }, [messages]);
@@ -51,7 +51,7 @@ const MessagesForm = () => {
   const messageInput = useRef();
   const apiContext = useApi();
   const auth = useAuth();
-  const { currentChannelId } = useSelector(channelsSelector);
+  const currentChannelId = useSelector(channelIdSelector);
 
   useEffect(() => {
     messageInput.current.focus();
@@ -59,7 +59,7 @@ const MessagesForm = () => {
 
   const i18n = useTranslation();
 
-  const { username } = auth.userId;
+  const { username } = auth.user;
 
   const formik = useFormik({
     initialValues: { message: '' },
@@ -103,11 +103,11 @@ const MessagesForm = () => {
   );
 };
 
-const MessagesContainer = ({ promiseSocket }) => (
+const MessagesContainer = () => (
   <div className="d-flex flex-column h-100">
     <MessagesHeader />
     <MessagesBox />
-    <MessagesForm promiseSocket={promiseSocket} />
+    <MessagesForm />
   </div>
 );
 

@@ -5,7 +5,6 @@ import {
   Switch,
   Route,
   Link,
-  Redirect,
 } from 'react-router-dom';
 import {
   Button, Navbar, Container,
@@ -14,46 +13,30 @@ import LoginPage from './LoginPage.jsx';
 import ChatPage from './ChatPage.jsx';
 import NotFoundPage from './NotFoundPage.jsx';
 import SignUpPage from './SignUp.jsx';
+import PrivateRoute from './PrivateRoute.jsx';
 import { authContext } from '../context/index.js';
 import { useAuth } from '../hooks/index.js';
-
-const PrivateRoute = ({ path }) => {
-  const { userId } = useAuth();
-
-  return (
-    <Route
-      path={path}
-      render={({ location }) => (
-        userId.token ? <ChatPage /> : <Redirect to={{ pathname: '/login', state: { from: location } }} />)}
-    />
-  );
-};
+import routes from '../routes.js';
 
 const AuthProvider = ({ children }) => {
-  const [userId, setUserId] = useState(() => JSON.parse(localStorage.getItem('userId')) || {
-    username: null,
-    token: null,
-  });
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')) || null);
   const logIn = (userData) => {
-    localStorage.setItem('userId', JSON.stringify(userData));
-    setUserId({
+    localStorage.setItem('user', JSON.stringify(userData));
+    setUser({
       username: userData.username,
       token: userData.token,
     });
   };
   const logOut = () => {
-    localStorage.removeItem('userId');
-    setUserId({
-      username: null,
-      token: null,
-    });
+    localStorage.removeItem('user');
+    setUser(null);
   };
 
-  const userRequestOptions = userId.token ? { Authorization: `Bearer ${userId.token}` } : {};
+  const getAuthHeader = () => (user.token ? { Authorization: `Bearer ${user.token}` } : {});
 
   return (
     <authContext.Provider value={{
-      logIn, logOut, userRequestOptions, userId, setUserId,
+      logIn, logOut, getAuthHeader, user, setUser,
     }}
     >
       {children}
@@ -64,7 +47,7 @@ const AuthProvider = ({ children }) => {
 const AuthButton = () => {
   const auth = useAuth();
   const i18n = useTranslation();
-  return auth.userId.token ? (
+  return auth.user ? (
     <Button onClick={() => {
       auth.logOut();
     }}
@@ -80,20 +63,22 @@ const App = () => (
       <Router>
         <Navbar bg="white" variant="light" expand="lg" className="shadow-sm">
           <Container>
-            <Navbar.Brand as={Link} to="/">Hexlet Chat</Navbar.Brand>
+            <Navbar.Brand as={Link} to={routes.chatPagePath()}>Hexlet Chat</Navbar.Brand>
             <AuthButton />
           </Container>
         </Navbar>
 
         <Switch>
-          <Route exact path="/login">
+          <Route exact path={routes.loginPagePath()}>
             <LoginPage />
           </Route>
-          <Route exact path="/signup">
+          <Route exact path={routes.signUpPagePath()}>
             <SignUpPage />
           </Route>
-          <PrivateRoute exact path="/" />
-          <Route path="*">
+          <PrivateRoute exact path={routes.chatPagePath()}>
+            <ChatPage />
+          </PrivateRoute>
+          <Route path={routes.notFoundPagePath()}>
             <NotFoundPage />
           </Route>
         </Switch>

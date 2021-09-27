@@ -33,7 +33,7 @@ const SignUpPage = () => {
         const userData = response.data;
         auth.logIn(userData);
         setSubmitting(false);
-        const { from } = location.state || { from: { pathname: '/' } };
+        const { from } = location.state || { from: { pathname: routes.chatPagePath() } };
         history.replace(from);
       } catch (e) {
         if (e.response.status === 409) {

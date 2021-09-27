@@ -5,18 +5,21 @@ import {
   Form, Modal, FormControl,
 } from 'react-bootstrap';
 import * as yup from 'yup';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useApi } from '../../hooks/index.js';
-import channelsSelector from '../../stateSelectors/channelsSelectors.js';
+import { channelsNamesSelector, modalSelector } from '../../stateSelectors/selectors.js';
+import { hideModal } from '../../slices/modalsSlice.js';
 
-const AddModal = ({ onHide, modalInfo }) => {
+const AddModal = () => {
   const [error, setError] = useState(null);
+  const modalInfo = useSelector(modalSelector);
+  const dispatch = useDispatch();
   const apiContext = useApi();
   const inputRef = useRef();
   const i18n = useTranslation();
-  const { channels } = useSelector(channelsSelector);
+  const channelsNames = useSelector(channelsNamesSelector);
   const validationSchema = yup.object().shape({
-    body: yup.string().notOneOf(channels.map((channel) => channel.name), i18n.t('errors.channelExist')).trim(i18n.t('errors.required')).required(),
+    body: yup.string().notOneOf(channelsNames, i18n.t('errors.channelExist')).trim(i18n.t('errors.required')).required(),
   });
   const formik = useFormik({
     initialValues: {
@@ -27,7 +30,7 @@ const AddModal = ({ onHide, modalInfo }) => {
       apiContext.socketApi('newChannel', { name: values.body.trim() })
         .then(() => {
           setError(null);
-          onHide();
+          dispatch(hideModal());
         })
         .catch((e) => {
           if (e.response.status === 408) {
@@ -39,11 +42,13 @@ const AddModal = ({ onHide, modalInfo }) => {
         });
     },
   });
+
   useEffect(() => {
     inputRef.current.focus();
   }, []);
+
   return (
-    <Modal show={modalInfo.show} onHide={onHide} centered>
+    <Modal show={modalInfo.show} onHide={() => dispatch(hideModal())} centered>
       <Modal.Header closeButton>
         <Modal.Title>{i18n.t('modal.addChannel')}</Modal.Title>
       </Modal.Header>
@@ -61,7 +66,7 @@ const AddModal = ({ onHide, modalInfo }) => {
           />
           <Form.Control.Feedback type="invalid">{error || formik.errors.body}</Form.Control.Feedback>
           <div className="d-flex justify-content-end">
-            <button type="button" disabled={formik.isSubmitting} className="btn btn-secondary me-2" onClick={onHide}>
+            <button type="button" disabled={formik.isSubmitting} className="btn btn-secondary me-2" onClick={() => dispatch(hideModal())}>
               {i18n.t('cancel')}
             </button>
             <button type="submit" disabled={formik.isSubmitting} className="btn btn-primary">

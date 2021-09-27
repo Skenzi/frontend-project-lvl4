@@ -5,22 +5,27 @@ import { useFormik } from 'formik';
 import {
   Modal, FormControl, Form,
 } from 'react-bootstrap';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useApi } from '../../hooks/index.js';
-import channelsSelector from '../../stateSelectors/channelsSelectors.js';
+import { channelsNamesSelector, modalSelector } from '../../stateSelectors/selectors.js';
+import { hideModal } from '../../slices/modalsSlice.js';
 
-const RenameModal = ({ onHide, modalInfo }) => {
+const RenameModal = () => {
   const [error, setError] = useState();
+  const modalInfo = useSelector(modalSelector);
+  const dispatch = useDispatch();
   const apiContext = useApi();
   const i18n = useTranslation();
-  const { channels } = useSelector(channelsSelector);
+  const channelsNames = useSelector(channelsNamesSelector);
   const validationSchema = yup.object().shape({
-    body: yup.string().notOneOf(channels.map((channel) => channel.name), i18n.t('errors.channelExist')).trim(i18n.t('errors.required')).required(),
+    body: yup.string().notOneOf(channelsNames, i18n.t('errors.channelExist')).trim(i18n.t('errors.required')).required(),
   });
   const inputRef = useRef();
+
   useEffect(() => {
     inputRef.current.select();
   }, []);
+
   const formik = useFormik({
     initialValues: {
       body: modalInfo.item.name,
@@ -31,7 +36,7 @@ const RenameModal = ({ onHide, modalInfo }) => {
       apiContext.socketApi('renameChannel', renamingChannel)
         .then(() => {
           setError(null);
-          onHide();
+          dispatch(hideModal());
         })
         .catch((e) => {
           formik.setSubmitting(false);
@@ -44,8 +49,8 @@ const RenameModal = ({ onHide, modalInfo }) => {
     },
   });
   return (
-    <Modal show={modalInfo.show} onHide={onHide} centered>
-      <Modal.Header closeButton onHide={onHide}>
+    <Modal show={modalInfo.show} onHide={() => dispatch(hideModal())} centered>
+      <Modal.Header closeButton onHide={() => dispatch(hideModal())}>
         <Modal.Title>{i18n.t('modal.renameChannel')}</Modal.Title>
       </Modal.Header>
 
@@ -62,7 +67,7 @@ const RenameModal = ({ onHide, modalInfo }) => {
           />
           <Form.Control.Feedback type="invalid">{error || formik.errors.body}</Form.Control.Feedback>
           <div className="d-flex justify-content-end">
-            <button type="button" disabled={formik.isSubmitting} className="btn btn-secondary me-2" onClick={onHide}>
+            <button type="button" disabled={formik.isSubmitting} className="btn btn-secondary me-2" onClick={() => dispatch(hideModal())}>
               {i18n.t('cancel')}
             </button>
             <button type="submit" disabled={formik.isSubmitting} className="btn btn-primary">{i18n.t('send')}</button>

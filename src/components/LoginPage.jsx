@@ -11,7 +11,7 @@ import routes from '../routes.js';
 const SignUpButton = () => {
   const i18n = useTranslation();
   return (
-    <Link to="/signup">
+    <Link to={routes.signUpPagePath()}>
       {i18n.t('signup.register')}
     </Link>
   );
@@ -37,7 +37,7 @@ const LoginPage = () => {
         const userData = response.data;
         auth.logIn(userData);
         setSubmitting(false);
-        const { from } = location.state || { from: { pathname: '/' } };
+        const { from } = location.state || { from: { pathname: routes.chatPagePath() } };
         history.replace(from);
       } catch (e) {
         if (e.response.status === 401) {
