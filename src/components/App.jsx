@@ -19,7 +19,12 @@ import { useAuth } from '../hooks/index.js';
 import routes from '../routes.js';
 
 const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')) || null);
+  const emptyUser = {
+    username: null,
+    token: null,
+  };
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')) || emptyUser);
+
   const logIn = (userData) => {
     localStorage.setItem('user', JSON.stringify(userData));
     setUser({
@@ -29,10 +34,10 @@ const AuthProvider = ({ children }) => {
   };
   const logOut = () => {
     localStorage.removeItem('user');
-    setUser(null);
+    setUser(emptyUser);
   };
 
-  const getAuthHeader = () => (user.token ? { Authorization: `Bearer ${user.token}` } : {});
+  const getAuthHeader = () => (user.username && user.token ? { Authorization: `Bearer ${user.token}` } : {});
 
   return (
     <authContext.Provider value={{
@@ -45,11 +50,11 @@ const AuthProvider = ({ children }) => {
 };
 
 const AuthButton = () => {
-  const auth = useAuth();
+  const { user, logOut } = useAuth();
   const i18n = useTranslation();
-  return auth.user ? (
+  return user.username && user.token ? (
     <Button onClick={() => {
-      auth.logOut();
+      logOut();
     }}
     >
       {i18n.t('login.logOut')}

@@ -10,7 +10,7 @@ const PrivateRoute = ({ path, children }) => {
     <Route
       path={path}
       render={({ location }) => (
-        user
+        user.username && user.token
           ? children
           : <Redirect to={{ pathname: routes.loginPagePath(), state: { from: location } }} />)}
     />
