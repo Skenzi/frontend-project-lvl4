@@ -9,14 +9,14 @@ import {
 import {
   Button, Navbar, Container,
 } from 'react-bootstrap';
-import LoginPage from './LoginPage.jsx';
-import ChatPage from './ChatPage.jsx';
-import NotFoundPage from './NotFoundPage.jsx';
-import SignUpPage from './SignUp.jsx';
-import PrivateRoute from './PrivateRoute.jsx';
-import { authContext } from '../context/index.js';
-import { useAuth } from '../hooks/index.js';
-import routes from '../routes.js';
+import LoginPage from './pages/LoginPage.jsx';
+import ChatPage from './pages/ChatPage.jsx';
+import NotFoundPage from './pages/NotFoundPage.jsx';
+import SignUpPage from './pages/SignUpPage.jsx';
+import PrivateRoute from './components/PrivateRoute.jsx';
+import { authContext } from './context/index.js';
+import { useAuth } from './hooks/index.js';
+import routes from './routes.js';
 
 const AuthProvider = ({ children }) => {
   const emptyUser = {
@@ -37,7 +37,7 @@ const AuthProvider = ({ children }) => {
     setUser(emptyUser);
   };
 
-  const getAuthHeader = () => (user.username && user.token ? { Authorization: `Bearer ${user.token}` } : {});
+  const getAuthHeader = () => (user?.username && user?.token ? { Authorization: `Bearer ${user.token}` } : {});
 
   return (
     <authContext.Provider value={{
